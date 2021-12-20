@@ -1,0 +1,138 @@
+:root{
+  --displayColor: #d9d9d9;
+  --numbersColor: #A3A3A3;
+  --functionsColor: #919191;
+  --textColor: #000000;
+}
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--textColor);
+}
+body{
+  background-color: var(--functionsColor);
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+#uifCalculator::-webkit-scrollbar {
+  width: 2vh;
+  
+}
+input:focus, #EquationFunc:focus, select:focus{
+  outline: none;
+}
+#funcGrid::-webkit-scrollbar-track {
+  background: transparent;
+  margin-bottom: 40px;
+}
+#funcGrid::-webkit-scrollbar-thumb {
+  width: 5;
+  min-height: 30px;
+  background: #00000033; 
+  border-radius: 10px;
+}
+#funcGrid::-webkit-scrollbar-button:end:increment {
+  height: 7px;
+  display: block;
+  background: transparent;
+}
+#funcGrid::-webkit-scrollbar-button:start:increment {
+  height: 7px;
+  display: block;
+  background: transparent;
+}
+#tab {
+  position: absolute;
+  overflow: hidden;
+  float: bottom;
+  border:0px;
+  height: 35px;
+  width: 100%;
+  background-color: var(--functionsColor);
+  display:inline-flex;
+  z-index: 1;
+}
+#tab button {
+  position: relative;
+  background-color: var(--functionsColor);
+  color: var(--textColor);
+  border: none;
+  cursor: pointer;
+  height: 90%;
+  top: 10%;
+  width:fit-content;
+  padding: 0px 15px 0 15px;
+  font-size: 17px;
+  border-radius: 15px 15px 0 0;
+  display: inline-flex;
+  -webkit-tap-highlight-color: transparent;
+}
+button:focus, input[type="button"]:focus {
+  outline: none;
+}
+#tab button h3{
+  font-size: 17px;
+  font-weight: normal;
+  margin-top: 6.5px;
+}
+#settingsCogIcon{
+  top: 0;
+  right: 0;
+  object-fit: fill;
+  position: absolute;
+}
+.tabcontent {
+  position:absolute;
+  width: 100%;
+  left: 0;
+  top: 35px;
+  bottom: 0;
+}
+.textInputTop{
+  top: 0;
+  left: 0;
+  width: 100%;
+  resize:none;
+  border-style: none;
+  padding: 10px;
+  padding-top: 25px;
+  color: var(--textColor);
+  align-content: end;
+  font-size: 75px;
+  text-align: end;
+  background-color: var(--functionsColor);
+  z-index: 0;
+  position: absolute;
+}
+.clearModifiers{
+  top: 0;
+  left: 10px;
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  position: absolute;
+}
+#minusButton{
+  margin-left: 40px;
+}
+#funcGrid{
+  position: absolute;
+  border-radius: 25px 25px 0 0;
+  background-color: var(--numbersColor);
+  grid-template-columns: 33.3333% 33.3333% 33.3333%;
+  display: block;
+  flex-wrap: wrap;
+  top: 121px;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  overflow-y: scroll;
+  
+}
+#customFuncButton{
+  width: 30.33333333333333333%;
+  margin-left: 2.25%;
+}

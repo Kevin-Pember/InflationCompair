@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="stylesheets.css">
+</head>
+<body>
+    <div id="tab">
+        <button class="tablinks active" id="mainTab" data-tabMap="mainTab">
+            <h3>Main</h3>
+        </button>
+        <template class="newTab">
+            <button id="tabButton" class="tablinks" data-tabMap="custFunc">thing<img id="tabRemove"
+                    src="Images/xIconWhite.png" width="35px"></button>
+        </template>
+        <img id="settingsCogIcon" src="Images/SettingsCogWhite.svg" height="100%">
+    </div>
+    <div id="MainContent" class="tabcontent" style="display:flex" data-tab="mainTab">
+                <input type="text" class="textInputTop" id="searchArea" placeholder="Search">
+                <div id="funcGrid">
+                        <button class="clearModifiers" onmousedown="preventFocus()" onclick="openNewFunc()"><img
+                                        src="Images/addObjectWhite.svg" width="40" height="40" id="addIcon"></button>
+                        <button class="clearModifiers" id="minusButton" onmousedown="preventFocus()"><img
+                                        src="Images/minusIconWhite.svg" width="40" height="40" id="minusIcon"></button>
+                        <template class="customFuncTemplate">
+                                <button class="customFuncLinks" onclick() id="customFuncButton">
+                                        <h2>Equation</h2>New Function
+                                </button>
+                        </template>
+                </div>
+    </div>
+    <template class="custFuncTabTemp">
+        <div class="tabcontent" id="customFuncTab">
+            
+        </div>
+    </template>
+</body>
+</html>
