@@ -1,4 +1,6 @@
 let TextColorGlobal = "#FFFFFF";
+let displayColor = getComputedStyle(document.body).getPropertyValue('--displayColor');
+let functionColor = getComputedStyle(document.body).getPropertyValue('--functionsColor');
 const tickers = [
     'CPI',
     'THY',
@@ -122,40 +124,42 @@ function searchChange(e) {
     }
 }
 function tickerClicked(e) {
+    console.log(e.target.type);
     let targetEl = e.target;
     let ticker = targetEl.dataset.ticker;
-    let tabClon = document.getElementsByClassName("customFuncTemplate")[0].content.cloneNode(true);
+    let tabClon = document.getElementsByClassName("newTab")[0].content.cloneNode(true);
     tabClon.getElementById('tabButton').innerHTML = "<h3>" + ticker + "</h3><img id='tabRemove' src='Images/xIconWhite.png' width='31.5px'>";
     tabClon.getElementById('tabButton').dataset.ticker = ticker;
-    if (TextColorGlobal == "#000000") {
-        tabClon.getElementById('tabRemove').src = "Images/xIcon.png";
-    }
     let highlight = tabClon.getElementById('tabButton');
     tabClon.getElementById('tabButton').addEventListener("click", function (e) {
-        if (e.target != highlight.querySelector("IMG")) {
-            openElement(highlight)
-        }
+        highlightTab(highlight);
     });
     tabClon.getElementById('tabRemove').addEventListener('click', function (e) {
         console.log("Remove Tab")
         removeCustFunc(e);
     })
     document.getElementById('tab').appendChild(tabClon);
+    let tab = document.getElementsByClassName('custFuncTabTemp')[0].content.cloneNode(true);
+    tab.getElementById('customFuncTab').dataset.ticker = ticker;
+    document.getElementById('mainBody').appendChild(tab);
     highlightTab(highlight);
 }
 function createTicker(tickerName) {
     let temp = document.getElementsByClassName("customFuncTemplate")[0], clon = temp.content.cloneNode(true), targetEl = document.getElementById("funcGrid");
     clon.getElementById("customFuncButton").innerHTML = "<h2>" + tickerName + "</h2>";
     clon.getElementById('customFuncButton').dataset.ticker = tickerName;
+    clon.getElementById('customFuncButton').addEventListener("click", function (e) {
+        tickerClicked(e);
+    });
     targetEl.appendChild(clon);
 }
 function removeCustFunc(event) {
     tabLink = event.target.parentElement;
     console.log(event.target);
-    document.getElementById('mainBody').removeChild(matchTab(tabLink.dataset.tabmap, false));
+    document.getElementById('mainBody').removeChild(matchTab(tabLink.dataset.ticker, false));
     document.getElementById('tab').removeChild(tabLink);
     console.log('Switching to main');
-    openElement(document.getElementById('mainTab'));
+    highlightTab(document.getElementById('mainTab'));
 }
 function openElement(evt) {
     console.log("element is ")
@@ -164,24 +168,45 @@ function openElement(evt) {
     console.log(evtElement.dataset.tabmap)
     let match;
     let tabs = document.getElementsByClassName('tabcontent');
-    if (evtElement.dataset.tabmap != "mainTab") {
-        if (document.getElementById('arrowIcon').style.animation == "0.25s ease-in 0s 1 normal forwards running toUp") {
-            document.getElementById('arrowIcon').style.animation = "0.0 ease-in 0s 1 normal forwards running toDown";
-            document.getElementById('extraFuncPopUp').style.animation = "0.0s ease-in 0s 1 normal forwards running toSlideDown";
-            setTimeout(donothing, 500);
-            document.getElementById('extraFuncPopUp').style.visibility = "hidden";
-        }
-        document.getElementById('customFuncDisplay').style.visibility = "hidden";
-    } else {
-        document.getElementById('customFuncDisplay').style.visibility = "";
-    }
-    match = matchTab(evtElement.dataset.tabmap, false);
-    console.log(evtElement.dataset.tabmap);
+    document.getElementById('customFuncDisplay').style.visibility = "";
+    match = matchTab(evtElement.dataset.ticker, false);
+    console.log(evtElement.dataset.ticker);
     for (let i = 0; i < tabs.length; i++) {
-        if (matchTab != tabs[i]) {
+        if (match != tabs[i]) {
             tabs[i].style.visibility = 'hidden';
         }
     }
     highlightTab(evtElement);
     match.style.visibility = 'visible';
 }
+
+function highlightTab(element) {
+    console.log(functionColor +" & "+ displayColor);
+    let activeTabs = document.getElementsByClassName('tablinks')
+    let activeTabPages = document.getElementsByClassName('tabcontent')
+    for (let i = 0; i < activeTabs.length; i++) {
+        activeTabs[i].style.backgroundColor = functionColor;
+        matchTab(activeTabs[i].dataset.ticker, false).style.visibility = 'hidden';
+    }
+    element.style.backgroundColor = displayColor;
+    matchTab(element.dataset.ticker, false).style.visibility = 'visible';
+}
+function matchTab(info, type) {
+    let elements = [];
+    if (type) {
+      elements = document.getElementsByClassName('tablinks');
+    } else {
+      elements = document.getElementsByClassName('tabcontent');
+    }
+    for (let i = 0; i < elements.length; i++) {
+      if (type) {
+        if (elements[i].dataset.ticker == info) {
+          return elements[i];
+        }
+      } else {
+        if (elements[i].dataset.ticker == info) {
+          return elements[i];
+        }
+      }
+    }
+  }

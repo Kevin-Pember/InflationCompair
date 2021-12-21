@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="stylesheets.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<body>
+<body id="mainBody">
     <div id="tab">
-        <button class="tablinks active" id="mainTab" data-tabMap="mainTab">
+        <button class="tablinks" id="mainTab" data-ticker="mainTab" onclick="highlightTab(document.getElementById('mainTab'))">
             <h3>Search</h3>
         </button>
         <template class="newTab">
@@ -19,7 +19,7 @@
         </template>
         <img id="settingsCogIcon" src="Images/SettingsCogWhite.svg" height="100%">
     </div>
-    <div id="MainContent" class="tabcontent" style="display:flex" data-tab="mainTab">
+    <div id="MainContent" class="tabcontent" style="display:flex" data-ticker="mainTab">
                 <input type="text" class="textInputTop" id="searchArea" placeholder="Search" oninput="searchChange(event)">
                 <div id="funcGrid">
                         
