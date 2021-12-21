@@ -23,6 +23,20 @@ body{
 input:focus, #EquationFunc:focus, select:focus{
   outline: none;
 }
+#funcGrid{
+  position: absolute;
+  border-radius: 25px 25px 0 0;
+  background-color: var(--numbersColor);
+  grid-template-columns: 33.3333% 33.3333% 33.3333%;
+  display: grid;
+  flex-wrap: wrap;
+  top: 121px;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+  
+}
 #funcGrid::-webkit-scrollbar-track {
   background: transparent;
   margin-bottom: 40px;
@@ -118,19 +132,21 @@ button:focus, input[type="button"]:focus {
 #minusButton{
   margin-left: 40px;
 }
-#funcGrid{
-  position: absolute;
-  border-radius: 25px 25px 0 0;
-  background-color: var(--numbersColor);
-  grid-template-columns: 33.3333% 33.3333% 33.3333%;
-  display: block;
-  flex-wrap: wrap;
-  top: 121px;
-  bottom: 0px;
-  left: 0;
-  right: 0;
-  overflow-y: auto;
-  
+
+#funcGrid button{
+  width: 80%;
+  height: 150px;
+  border-radius: 25px;
+  background-color: var(--displayColor);
+  color: var(--textColor);
+  font-size: 25px;
+  border: none;
+  display: flex;
+  margin-left: 10%;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
 }
 #customFuncButton{
   width: 30.33333333333333333%;
