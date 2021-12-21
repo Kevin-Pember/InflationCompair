@@ -132,11 +132,19 @@ function tickerClicked(e) {
     tabClon.getElementById('tabButton').dataset.ticker = ticker;
     let highlight = tabClon.getElementById('tabButton');
     tabClon.getElementById('tabButton').addEventListener("click", function (e) {
-        highlightTab(highlight);
+        if(e.target.id != "tabRemove"){
+            highlightTab(highlight);
+        }
     });
     tabClon.getElementById('tabRemove').addEventListener('click', function (e) {
         console.log("Remove Tab")
-        removeCustFunc(e);
+        tabLink = e.target.parentElement;
+        console.log(e.target);
+        document.getElementById('mainBody').removeChild(matchTab(tabLink.dataset.ticker, false));
+        document.getElementById('tab').removeChild(tabLink);
+        console.log('Switching to main');
+        document.getElementById('mainTab').style.backgroundColor = displayColor;
+        document.getElementById('MainContent').style.visibility = 'visible';
     })
     document.getElementById('tab').appendChild(tabClon);
     let tab = document.getElementsByClassName('custFuncTabTemp')[0].content.cloneNode(true);
@@ -152,14 +160,6 @@ function createTicker(tickerName) {
         tickerClicked(e);
     });
     targetEl.appendChild(clon);
-}
-function removeCustFunc(event) {
-    tabLink = event.target.parentElement;
-    console.log(event.target);
-    document.getElementById('mainBody').removeChild(matchTab(tabLink.dataset.ticker, false));
-    document.getElementById('tab').removeChild(tabLink);
-    console.log('Switching to main');
-    highlightTab(document.getElementById('mainTab'));
 }
 function openElement(evt) {
     console.log("element is ")
@@ -181,7 +181,7 @@ function openElement(evt) {
 }
 
 function highlightTab(element) {
-    console.log(functionColor +" & "+ displayColor);
+    console.log(functionColor + " & " + displayColor);
     let activeTabs = document.getElementsByClassName('tablinks')
     let activeTabPages = document.getElementsByClassName('tabcontent')
     for (let i = 0; i < activeTabs.length; i++) {
@@ -189,24 +189,25 @@ function highlightTab(element) {
         matchTab(activeTabs[i].dataset.ticker, false).style.visibility = 'hidden';
     }
     element.style.backgroundColor = displayColor;
+    console.log(matchTab(element.dataset.ticker, false));
     matchTab(element.dataset.ticker, false).style.visibility = 'visible';
 }
 function matchTab(info, type) {
     let elements = [];
     if (type) {
-      elements = document.getElementsByClassName('tablinks');
+        elements = document.getElementsByClassName('tablinks');
     } else {
-      elements = document.getElementsByClassName('tabcontent');
+        elements = document.getElementsByClassName('tabcontent');
     }
     for (let i = 0; i < elements.length; i++) {
-      if (type) {
-        if (elements[i].dataset.ticker == info) {
-          return elements[i];
+        if (type) {
+            if (elements[i].dataset.ticker == info) {
+                return elements[i];
+            }
+        } else {
+            if (elements[i].dataset.ticker == info) {
+                return elements[i];
+            }
         }
-      } else {
-        if (elements[i].dataset.ticker == info) {
-          return elements[i];
-        }
-      }
     }
-  }
+}
