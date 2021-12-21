@@ -1,3 +1,4 @@
+let TextColorGlobal = "#FFFFFF";
 const tickers = [
     'CPI',
     'THY',
@@ -104,20 +105,83 @@ const tickers = [
     'SIFAX',
     'CAAHX',
 ];
-for(let ticker of tickers){
-    let temp = document.getElementsByClassName("customFuncTemplate")[0], clon = temp.content.cloneNode(true), targetEl = document.getElementById("funcGrid");
-    clon.getElementById("customFuncButton").innerHTML = "<h2>" + ticker + "</h2>";
-    clon.getElementById('customFuncButton').dataset.ticker = ticker;
-    targetEl.appendChild(clon);
+for (let ticker of tickers) {
+    createTicker(ticker);
 }
-function searchChange(e){
+function searchChange(e) {
     let targetEl = e.target;
-    let items = document.getElementsByClassName("customFuncLinks");
-    for(let item of items){
-        if(item.dataset.ticker.contains(targetEl.value)){
-            item.style.visibility = "visible";
-        }else{
-            item.style.visibility = "hidden";
+    let gridContainer = document.getElementById("funcGrid");
+    while (gridContainer.firstChild) {
+        gridContainer.removeChild(gridContainer.firstChild);
+    }
+    for (let item of tickers) {
+        console.log(item);
+        if (item.search(targetEl.value) != -1) {
+            createTicker(item);
         }
     }
+}
+function tickerClicked(e) {
+    let targetEl = e.target;
+    let ticker = targetEl.dataset.ticker;
+    let tabClon = document.getElementsByClassName("customFuncTemplate")[0].content.cloneNode(true);
+    tabClon.getElementById('tabButton').innerHTML = "<h3>" + ticker + "</h3><img id='tabRemove' src='Images/xIconWhite.png' width='31.5px'>";
+    tabClon.getElementById('tabButton').dataset.ticker = ticker;
+    if (TextColorGlobal == "#000000") {
+        tabClon.getElementById('tabRemove').src = "Images/xIcon.png";
+    }
+    let highlight = tabClon.getElementById('tabButton');
+    tabClon.getElementById('tabButton').addEventListener("click", function (e) {
+        if (e.target != highlight.querySelector("IMG")) {
+            openElement(highlight)
+        }
+    });
+    tabClon.getElementById('tabRemove').addEventListener('click', function (e) {
+        console.log("Remove Tab")
+        removeCustFunc(e);
+    })
+    document.getElementById('tab').appendChild(tabClon);
+    highlightTab(highlight);
+}
+function createTicker(tickerName) {
+    let temp = document.getElementsByClassName("customFuncTemplate")[0], clon = temp.content.cloneNode(true), targetEl = document.getElementById("funcGrid");
+    clon.getElementById("customFuncButton").innerHTML = "<h2>" + tickerName + "</h2>";
+    clon.getElementById('customFuncButton').dataset.ticker = tickerName;
+    targetEl.appendChild(clon);
+}
+function removeCustFunc(event) {
+    tabLink = event.target.parentElement;
+    console.log(event.target);
+    document.getElementById('mainBody').removeChild(matchTab(tabLink.dataset.tabmap, false));
+    document.getElementById('tab').removeChild(tabLink);
+    console.log('Switching to main');
+    openElement(document.getElementById('mainTab'));
+}
+function openElement(evt) {
+    console.log("element is ")
+    console.log(evt)
+    let evtElement = evt;
+    console.log(evtElement.dataset.tabmap)
+    let match;
+    let tabs = document.getElementsByClassName('tabcontent');
+    if (evtElement.dataset.tabmap != "mainTab") {
+        if (document.getElementById('arrowIcon').style.animation == "0.25s ease-in 0s 1 normal forwards running toUp") {
+            document.getElementById('arrowIcon').style.animation = "0.0 ease-in 0s 1 normal forwards running toDown";
+            document.getElementById('extraFuncPopUp').style.animation = "0.0s ease-in 0s 1 normal forwards running toSlideDown";
+            setTimeout(donothing, 500);
+            document.getElementById('extraFuncPopUp').style.visibility = "hidden";
+        }
+        document.getElementById('customFuncDisplay').style.visibility = "hidden";
+    } else {
+        document.getElementById('customFuncDisplay').style.visibility = "";
+    }
+    match = matchTab(evtElement.dataset.tabmap, false);
+    console.log(evtElement.dataset.tabmap);
+    for (let i = 0; i < tabs.length; i++) {
+        if (matchTab != tabs[i]) {
+            tabs[i].style.visibility = 'hidden';
+        }
+    }
+    highlightTab(evtElement);
+    match.style.visibility = 'visible';
 }
