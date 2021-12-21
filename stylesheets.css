@@ -12,7 +12,7 @@
   color: var(--textColor);
 }
 body{
-  background-color: var(--functionsColor);
+  background-color: var(--displayColor);
   overflow-x: hidden;
   overflow-y: hidden;
 }
@@ -56,7 +56,7 @@ input:focus, #EquationFunc:focus, select:focus{
 }
 #tab button {
   position: relative;
-  background-color: var(--functionsColor);
+  background-color: var(--displayColor);
   color: var(--textColor);
   border: none;
   cursor: pointer;
@@ -102,7 +102,7 @@ button:focus, input[type="button"]:focus {
   align-content: end;
   font-size: 75px;
   text-align: end;
-  background-color: var(--functionsColor);
+  background-color: var(--displayColor);
   z-index: 0;
   position: absolute;
 }
@@ -129,7 +129,7 @@ button:focus, input[type="button"]:focus {
   bottom: 0px;
   left: 0;
   right: 0;
-  overflow-y: scroll;
+  overflow-y: auto;
   
 }
 #customFuncButton{
