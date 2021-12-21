@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "yahoo-finance": "^0.3.7"
+  },
+  "devDependencies": {
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
+  }
+}

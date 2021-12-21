@@ -1,8 +1,15 @@
 from tkinter import *
 
 window = Tk()
-window.title("First GUI")
-window.geometry("200x100")
+window.title("Uping")
+window.geometry("500x700")
+
+label = Label(window, 
+text="Upling",
+font=('Arial', 40),
+fg='black',
+width= 30)
+label.pack()
 
 icon = PhotoImage(file='Icon.png')
 window.iconphoto(True,icon)
