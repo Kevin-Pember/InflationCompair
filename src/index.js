@@ -1,4 +1,8 @@
-const yahooFinance = require('yahoo-finance');
+var Quandl = require("quandl");
+var quandl = new Quandl({
+    auth_token: "PQF3D2RVwcHgy2q2wUxT",
+    api_version: 3
+});
 let TextColorGlobal = "#FFFFFF";
 let displayColor = getComputedStyle(document.body).getPropertyValue('--displayColor');
 let functionColor = getComputedStyle(document.body).getPropertyValue('--functionsColor');
