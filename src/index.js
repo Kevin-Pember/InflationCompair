@@ -1,3 +1,4 @@
+const yahooFinance = require('yahoo-finance');
 let TextColorGlobal = "#FFFFFF";
 let displayColor = getComputedStyle(document.body).getPropertyValue('--displayColor');
 let functionColor = getComputedStyle(document.body).getPropertyValue('--functionsColor');
@@ -147,10 +148,30 @@ function tickerClicked(e) {
         document.getElementById('MainContent').style.visibility = 'visible';
     })
     document.getElementById('tab').appendChild(tabClon);
-    let tab = document.getElementsByClassName('custFuncTabTemp')[0].content.cloneNode(true);
-    tab.getElementById('customFuncTab').dataset.ticker = ticker;
+    let tab = tickerTabInit(ticker);
     document.getElementById('mainBody').appendChild(tab);
     highlightTab(highlight);
+}
+function tickerTabInit(tag){
+    let tab = document.getElementsByClassName('custFuncTabTemp')[0].content.cloneNode(true);
+    tab.getElementById('customFuncTab').dataset.ticker = tag;
+    tab.getElementById('tickerTag').innerHTML = tag;
+    let chart = tab.getElementById('charta').getContext('2d');
+
+    let stockTicker = new Chart(chart, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Price',
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+        }
+    })
+    return tab;
 }
 function createTicker(tickerName) {
     let temp = document.getElementsByClassName("customFuncTemplate")[0], clon = temp.content.cloneNode(true), targetEl = document.getElementById("funcGrid");

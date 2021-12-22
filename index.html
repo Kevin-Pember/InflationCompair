@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,10 +9,13 @@
     <link rel="stylesheet" href="stylesheets.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="./src/index.js"></script>
 </head>
+
 <body id="mainBody">
     <div id="tab">
-        <button class="tablinks" id="mainTab" data-ticker="mainTab" onclick="highlightTab(document.getElementById('mainTab'))">
+        <button class="tablinks" id="mainTab" data-ticker="mainTab"
+            onclick="highlightTab(document.getElementById('mainTab'))">
             <h3>Search</h3>
         </button>
         <template class="newTab">
@@ -21,21 +25,27 @@
         <img id="settingsCogIcon" src="Images/SettingsCogWhite.svg" height="100%">
     </div>
     <div id="MainContent" class="tabcontent" style="display:flex" data-ticker="mainTab">
-                <input type="text" class="textInputTop" id="searchArea" placeholder="Search" oninput="searchChange(event)">
-                <div id="funcGrid">
-                        
-                </div>
-                <template class="customFuncTemplate">
-                    <button class="customFuncLinks"  id="customFuncButton">
-                            <h2>Equation</h2>New Function
-                    </button>
-                </template>
+        <input type="text" class="textInputTop" id="searchArea" placeholder="Search" oninput="searchChange(event)">
+        <div id="funcGrid">
+
+        </div>
+        <template class="customFuncTemplate">
+            <button class="customFuncLinks" id="customFuncButton">
+                <h2>Equation</h2>New Function
+            </button>
+        </template>
     </div>
     <template class="custFuncTabTemp">
         <div class="tabcontent" id="customFuncTab">
-            <canvas id="myChart"></canvas>
+            <h1 id="tickerTag">
+                <h1>
+                    <div id="tickerDisplay">
+                        <div id="chartContainer">
+                            <canvas id="charta"></canvas>
+                        </div>
+                    </div>
         </div>
     </template>
-    <script src="./src/index.js"></script>
 </body>
+
 </html>

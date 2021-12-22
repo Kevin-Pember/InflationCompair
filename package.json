@@ -1,4 +1,23 @@
 {
+  "name": "mentorrepo",
+  "description": "Repo for senior project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kevin-Pember/MentorRepo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kevin-Pember/MentorRepo/issues"
+  },
+  "homepage": "https://github.com/Kevin-Pember/MentorRepo#readme",
   "dependencies": {
     "yahoo-finance": "^0.3.7"
   },
