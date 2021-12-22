@@ -161,25 +161,6 @@ function createTicker(tickerName) {
     });
     targetEl.appendChild(clon);
 }
-function openElement(evt) {
-    console.log("element is ")
-    console.log(evt)
-    let evtElement = evt;
-    console.log(evtElement.dataset.tabmap)
-    let match;
-    let tabs = document.getElementsByClassName('tabcontent');
-    document.getElementById('customFuncDisplay').style.visibility = "";
-    match = matchTab(evtElement.dataset.ticker, false);
-    console.log(evtElement.dataset.ticker);
-    for (let i = 0; i < tabs.length; i++) {
-        if (match != tabs[i]) {
-            tabs[i].style.visibility = 'hidden';
-        }
-    }
-    highlightTab(evtElement);
-    match.style.visibility = 'visible';
-}
-
 function highlightTab(element) {
     console.log(functionColor + " & " + displayColor);
     let activeTabs = document.getElementsByClassName('tablinks')
