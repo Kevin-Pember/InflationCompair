@@ -1,8 +1,4 @@
-var Quandl = require("quandl");
-var quandl = new Quandl({
-    auth_token: "PQF3D2RVwcHgy2q2wUxT",
-    api_version: 3
-});
+var stock = new Stocks('NI9FLNUKRBMDU47J');
 let TextColorGlobal = "#FFFFFF";
 let displayColor = getComputedStyle(document.body).getPropertyValue('--displayColor');
 let functionColor = getComputedStyle(document.body).getPropertyValue('--functionsColor');
@@ -156,25 +152,55 @@ function tickerClicked(e) {
     document.getElementById('mainBody').appendChild(tab);
     highlightTab(highlight);
 }
-function tickerTabInit(tag){
-    let tab = document.getElementsByClassName('custFuncTabTemp')[0].content.cloneNode(true);
-    tab.getElementById('customFuncTab').dataset.ticker = tag;
-    tab.getElementById('tickerTag').innerHTML = tag;
-    let chart = tab.getElementById('charta').getContext('2d');
+async function setGraph(chart,symbol,invr,start,end){
+    var options = {
+        symbol: symbol,
+        interval: invr,
+        start: new Date(start),
+        end: new Date(end)
+    }
+    var data = await stock.timeSeries(options);
+    let closes = [];
+    let dates = [];
+    for(let week of data){
+        closes.unshift(week.close);
+        let rawDate = week.date.toString();
+        let date = rawDate.substring(rawDate.indexOf(' ')+1,15);
+        dates.unshift(date);
+    }
 
     let stockTicker = new Chart(chart, {
         type: 'line',
         data: {
-            labels: [],
+            labels: dates,
             datasets: [{
                 label: 'Price',
+                data: closes,
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            elements: {
+                point:{
+                    radius: 0
+                }
+            }
         }
     })
+}
+function tickerTabInit(tag){
+    let tab = document.getElementsByClassName('custFuncTabTemp')[0].content.cloneNode(true);
+    tab.getElementById('customFuncTab').dataset.ticker = tag;
+    tab.getElementById('tickerTag').innerHTML = tag;
+    //Gets Dates 
+    let d = new Date();
+    let pastDate =d.getFullYear()-5+"-"+d.getMonth()+"-"+d.getDay();
+    let currentDate = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDay();
+    let chart = tab.getElementById('charta').getContext('2d');
+    setGraph(chart,tag,"daily",pastDate,currentDate);
+    console.log(typeof data);
+    
     return tab;
 }
 function createTicker(tickerName) {
