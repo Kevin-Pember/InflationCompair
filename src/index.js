@@ -168,13 +168,20 @@ async function setGraph(chart,symbol,invr,start,end){
         let date = rawDate.substring(rawDate.indexOf(' ')+1,15);
         dates.unshift(date);
     }
-
+    let chartColor = "";
+    if(closes[0] > closes[closes.length-1]){
+        chartColor = "#ff3300";
+    }else{
+        chartColor = "#33cc33";
+    }
     let stockTicker = new Chart(chart, {
         type: 'line',
         data: {
             labels: dates,
             datasets: [{
                 label: 'Price',
+                borderColor: chartColor,
+                backgroundColor: chartColor,
                 data: closes,
             }]
         },
@@ -184,6 +191,14 @@ async function setGraph(chart,symbol,invr,start,end){
             elements: {
                 point:{
                     radius: 0
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 }
             }
         }
