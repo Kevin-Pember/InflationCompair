@@ -125,8 +125,11 @@ function searchChange(e) {
     }
 }
 function tickerClicked(e) {
-    console.log(e.target.type);
-    let targetEl = e.target;
+    console.log(e.target.tagName);
+    var targetEl = e.target;
+    if(e.target.tagName == "H2"){
+        targetEl = e.target.parentElement;
+    }
     let ticker = targetEl.dataset.ticker;
     let tabClon = document.getElementsByClassName("newTab")[0].content.cloneNode(true);
     tabClon.getElementById('tabButton').innerHTML = "<h3>" + ticker + "</h3><img id='tabRemove' src='Images/xIconWhite.png' width='31.5px'>";
@@ -141,11 +144,17 @@ function tickerClicked(e) {
         console.log("Remove Tab")
         tabLink = e.target.parentElement;
         console.log(e.target);
+        let thisTab = false;
+        if(matchTab(tabLink.dataset.ticker).style.visibility == "visible"){
+            thisTab = true;
+        }
         document.getElementById('mainBody').removeChild(matchTab(tabLink.dataset.ticker, false));
         document.getElementById('tab').removeChild(tabLink);
         console.log('Switching to main');
-        document.getElementById('mainTab').style.backgroundColor = displayColor;
-        document.getElementById('MainContent').style.visibility = 'visible';
+        if(thisTab){
+            document.getElementById('mainTab').style.backgroundColor = displayColor;
+            document.getElementById('MainContent').style.visibility = 'visible';
+        }
     })
     document.getElementById('tab').appendChild(tabClon);
     let tab = tickerTabInit(ticker);

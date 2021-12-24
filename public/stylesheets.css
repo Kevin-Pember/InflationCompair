@@ -1,8 +1,8 @@
 :root{
-  --displayColor: #d9d9d9;
-  --numbersColor: #A3A3A3;
-  --functionsColor: #919191;
-  --textColor: #000000;
+  --displayColor: #383838;
+  --numbersColor: #525252;
+  --functionsColor: #292929;
+  --textColor: #FFFFFF;
 }
 *{
   box-sizing: border-box;
