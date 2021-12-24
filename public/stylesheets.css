@@ -173,3 +173,26 @@ button:focus, input[type="button"]:focus {
   width: 95%;
   height: 400px;
 }
+#timeInvr{
+  position: absolute;
+  display: grid;
+  grid-template-columns: 50px 50px 50px 50px;
+  left: 2.5%;
+  height: 30px;
+  top: 430px;
+}
+.invrBut{
+  width: 90%;
+  margin-left: 5%;
+  background-color: var(--displayColor);
+  border: none;
+  border-radius: 25px;
+}
+#returned{
+  position: absolute;
+  top: 470px;
+  left: 2.5%;
+  font-size: 75px;
+  width: 95%;
+  overflow: hidden;
+}

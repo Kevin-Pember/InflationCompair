@@ -38,12 +38,19 @@
     <template class="custFuncTabTemp">
         <div class="tabcontent" id="customFuncTab">
             <h1 id="tickerTag">
-                <h1>
-                    <div id="tickerDisplay">
-                        <div id="chartContainer">
-                            <canvas id="charta"></canvas>
-                        </div>
-                    </div>
+            </h1>
+            <div id="tickerDisplay">
+                <div id="chartContainer">
+                    <canvas id="charta"></canvas>
+                </div>
+                <div id="timeInvr">
+                    <button id="week" class="invrBut">W</button>
+                    <button id="month" class="invrBut">M</button>
+                    <button id="year" class="invrBut">Y</button>
+                    <button id="fiveToMax" class="invrBut">5Y</button>
+                </div>
+                <h1 id='returned'></h1>
+            </div>
         </div>
     </template>
 </body>
