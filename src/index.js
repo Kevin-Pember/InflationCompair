@@ -161,7 +161,7 @@ function tickerClicked(e) {
     document.getElementById('mainBody').appendChild(tab);
     highlightTab(highlight);
 }
-async function setGraph(returned,timeInvr,chart,symbol,invr,start,end){
+async function setGraph(askReturned,returned,timeInvr,chart,symbol,invr,start,end){
     var options = {
         symbol: symbol,
         interval: invr,
@@ -187,6 +187,7 @@ async function setGraph(returned,timeInvr,chart,symbol,invr,start,end){
     let chartColor = calculateColor(closes);
     
     setReturned(closes,returned,chartColor);
+    setAskReturned(closes,askReturned,chartColor);
     let stockTicker = new Chart(chart, {
         type: 'line',
         data: {
@@ -223,6 +224,7 @@ async function setGraph(returned,timeInvr,chart,symbol,invr,start,end){
         changedDates = dates.slice(dates.length-7,dates.length);
         let chartColor = calculateColor(changedCloses);
         setReturned(changedCloses,returned,chartColor);
+        setAskReturned(changedCloses,askReturned,chartColor);
         addData(stockTicker, changedDates, changedCloses, chartColor);
     });
     timeInvr.children[1].addEventListener('click', function (e) {
@@ -231,6 +233,7 @@ async function setGraph(returned,timeInvr,chart,symbol,invr,start,end){
         changedDates = dates.slice(dates.length-30,dates.length);
         let chartColor = calculateColor(changedCloses);
         setReturned(changedCloses,returned,chartColor);
+        setAskReturned(changedCloses,askReturned,chartColor);
         addData(stockTicker, changedDates, changedCloses, chartColor);
     });
     timeInvr.children[2].addEventListener('click', function (e) {
@@ -239,25 +242,38 @@ async function setGraph(returned,timeInvr,chart,symbol,invr,start,end){
         changedDates = dates.slice(dates.length-365,dates.length);
         let chartColor = calculateColor(changedCloses);
         setReturned(changedCloses,returned,chartColor);
+        setAskReturned(changedCloses,askReturned,chartColor);
         addData(stockTicker, changedDates, changedCloses, chartColor);
     });
     timeInvr.children[3].addEventListener('click', function (e) {
         removeData(stockTicker);
         let chartColor = calculateColor(closes);
         setReturned(closes,returned,chartColor);
+        setAskReturned(closes,askReturned,chartColor);
         addData(stockTicker, dates, closes, chartColor);
     });
 }
 function setReturned(closes,returned,chartColor){
     if(chartColor == "#ff3300"){
-        returned.style = "color: #ff3300; position: absolute; top: 470px; left: 2.5%; font-size: 75px; width: 95%; overflow: hidden;";
+        returned.style = "color: #ff3300; position: absolute; top: 470px; left: 2.5%; font-size: 75px; width: 45%; overflow: hidden;";
         let value = String(closes[0]-closes[closes.length-1]);
         returned.innerHTML = "-"+value.substring(0,value.indexOf('.')+3);
     }else {
-        returned.style = "color: #33cc33; position: absolute; top: 470px; left: 2.5%; font-size: 75px; width: 95%; overflow: hidden;";
+        returned.style = "color: #33cc33; position: absolute; top: 470px; left: 2.5%; font-size: 75px; width: 45%; overflow: hidden;";
         let value = String(closes[closes.length-1]-closes[0]);
         returned.innerHTML = "+"+value.substring(0,value.indexOf('.')+3);
     }
+}
+function setAskReturned(closes,askReturned,chartColor){
+    let value = String(closes[closes.length-1]/closes[0]-1);
+    if(chartColor == "#ff3300"){
+        askReturned.style = "color: #ff3300; position: absolute; top: 470px; left: 47.5%; font-size: 75px; width: 45%; text-align: right; overflow: hidden;";
+        askReturned.innerHTML = value.substring(0,value.indexOf('.')+5)+"%";
+    }else {
+        askReturned.style = "color: #33cc33; position: absolute; top: 470px; left: 47.5%; font-size: 75px; width: 45%; text-align: right; overflow: hidden;";
+        askReturned.innerHTML = "+"+value.substring(0,value.indexOf('.')+5)+"%";
+    }
+    
 }
 function calculateColor(closes){
     if(closes[0] > closes[closes.length-1]){
@@ -296,8 +312,9 @@ function tickerTabInit(tag){
     let chart = tab.getElementById('charta').getContext('2d');
     let timeInvr = tab.getElementById('timeInvr');
     let returned = tab.getElementById('returned');
+    let askReturned = tab.getElementById('askedReturned');
     console.log("start date: "+pastDate+" end date: "+currentDate);
-    setGraph(returned,timeInvr,chart,tag,"daily",pastDate,currentDate);
+    setGraph(askReturned,returned,timeInvr,chart,tag,"daily",pastDate,currentDate);
     console.log(typeof data);
     
     return tab;
