@@ -1,4 +1,29 @@
-var stock = new Stocks('NI9FLNUKRBMDU47J');
+var stock;
+if (localStorage.getItem('apiKey') != null) {
+    stock = new Stocks(localStorage.getItem('apiKey'));
+} else {
+    document.getElementById('enterPrompt').style.visibility = 'visible';
+    document.getElementById('exitAdd').style.visibility = 'hidden';
+    document.getElementById('apiLink').style.visibility = 'visible';
+}
+document.getElementById('addButton').addEventListener('click', function (e) {
+    if (localStorage.getItem('apiKey') != null) {
+    } else {
+        document.getElementById('exitAdd').style.visibility = undefined;
+        document.getElementById('apiLink').style.visibility = 'hidden';
+    }
+    localStorage.setItem('apiKey', document.getElementById('newLinkText').value);
+    stock = new Stocks(localStorage.getItem('apiKey'));
+    document.getElementById('enterPrompt').style.visibility = 'hidden';
+});
+document.getElementById('settingsCogIcon').addEventListener('click', function (e) {
+    document.getElementById('enterPrompt').style.visibility = 'visible';
+    document.getElementById('newLinkText').value = localStorage.getItem('apiKey');
+});
+document.getElementById('exitAdd').addEventListener('click', function (e) {
+    document.getElementById('enterPrompt').style.visibility = 'hidden';
+});
+// = new Stocks('NI9FLNUKRBMDU47J');
 let TextColorGlobal = "#FFFFFF";
 let displayColor = getComputedStyle(document.body).getPropertyValue('--displayColor');
 let functionColor = getComputedStyle(document.body).getPropertyValue('--functionsColor');
@@ -108,6 +133,7 @@ const tickers = [
     'SIFAX',
     'CAAHX',
 ];
+console.log("hello")
 for (let ticker of tickers) {
     createTicker(ticker);
 }
@@ -125,9 +151,10 @@ function searchChange(e) {
     }
 }
 function tickerClicked(e) {
-    console.log(e.target.tagName);
+    console.log("Stock element is");
+    console.log(stock);
     var targetEl = e.target;
-    if(e.target.tagName == "H2"){
+    if (e.target.tagName == "H2") {
         targetEl = e.target.parentElement;
     }
     let ticker = targetEl.dataset.ticker;
@@ -136,7 +163,7 @@ function tickerClicked(e) {
     tabClon.getElementById('tabButton').dataset.ticker = ticker;
     let highlight = tabClon.getElementById('tabButton');
     tabClon.getElementById('tabButton').addEventListener("click", function (e) {
-        if(e.target.id != "tabRemove"){
+        if (e.target.id != "tabRemove") {
             highlightTab(highlight);
         }
     });
@@ -145,13 +172,13 @@ function tickerClicked(e) {
         tabLink = e.target.parentElement;
         console.log(e.target);
         let thisTab = false;
-        if(matchTab(tabLink.dataset.ticker).style.visibility == "visible"){
+        if (matchTab(tabLink.dataset.ticker).style.visibility == "visible") {
             thisTab = true;
         }
         document.getElementById('mainBody').removeChild(matchTab(tabLink.dataset.ticker, false));
         document.getElementById('tab').removeChild(tabLink);
         console.log('Switching to main');
-        if(thisTab){
+        if (thisTab) {
             document.getElementById('mainTab').style.backgroundColor = displayColor;
             document.getElementById('MainContent').style.visibility = 'visible';
         }
@@ -161,7 +188,7 @@ function tickerClicked(e) {
     document.getElementById('mainBody').appendChild(tab);
     highlightTab(highlight);
 }
-async function setGraph(askReturned,returned,timeInvr,chart,symbol,invr,start,end){
+async function setGraph(askReturned, returned, timeInvr, chart, symbol, invr, start, end) {
     var options = {
         symbol: symbol,
         interval: invr,
@@ -171,23 +198,23 @@ async function setGraph(askReturned,returned,timeInvr,chart,symbol,invr,start,en
     var data = await stock.timeSeries(options);
     let closes = [];
     let dates = [];
-    for(let week of data){
+    for (let week of data) {
         closes.unshift(week.close);
         let rawDate = week.date.toString();
-        let date = rawDate.substring(rawDate.indexOf(' ')+1,15);
+        let date = rawDate.substring(rawDate.indexOf(' ') + 1, 15);
         dates.unshift(date);
     }
-    console.log("dates: "+dates.length)
+    console.log("dates: " + dates.length)
     console.log(timeInvr.children[3].innerHTML);
-    if(closes.length >= 1258){
+    if (closes.length >= 1258) {
         timeInvr.children[3].innerHTML = "5y";
-    }else {
+    } else {
         timeInvr.children[3].innerHTML = "Max";
     }
     let chartColor = calculateColor(closes);
-    
-    setReturned(closes,returned,chartColor);
-    setAskReturned(closes,askReturned,chartColor);
+
+    setReturned(closes, returned, chartColor);
+    setAskReturned(closes, askReturned, chartColor);
     let stockTicker = new Chart(chart, {
         type: 'line',
         data: {
@@ -204,7 +231,7 @@ async function setGraph(askReturned,returned,timeInvr,chart,symbol,invr,start,en
             responsive: true,
             maintainAspectRatio: false,
             elements: {
-                point:{
+                point: {
                     radius: 0
                 }
             },
@@ -220,65 +247,65 @@ async function setGraph(askReturned,returned,timeInvr,chart,symbol,invr,start,en
     })
     timeInvr.children[0].addEventListener('click', function (e) {
         removeData(stockTicker);
-        changedCloses = closes.slice(closes.length-7,closes.length);
-        changedDates = dates.slice(dates.length-7,dates.length);
+        changedCloses = closes.slice(closes.length - 7, closes.length);
+        changedDates = dates.slice(dates.length - 7, dates.length);
         let chartColor = calculateColor(changedCloses);
-        setReturned(changedCloses,returned,chartColor);
-        setAskReturned(changedCloses,askReturned,chartColor);
+        setReturned(changedCloses, returned, chartColor);
+        setAskReturned(changedCloses, askReturned, chartColor);
         addData(stockTicker, changedDates, changedCloses, chartColor);
     });
     timeInvr.children[1].addEventListener('click', function (e) {
         removeData(stockTicker);
-        changedCloses = closes.slice(closes.length-30,closes.length);
-        changedDates = dates.slice(dates.length-30,dates.length);
+        changedCloses = closes.slice(closes.length - 30, closes.length);
+        changedDates = dates.slice(dates.length - 30, dates.length);
         let chartColor = calculateColor(changedCloses);
-        setReturned(changedCloses,returned,chartColor);
-        setAskReturned(changedCloses,askReturned,chartColor);
+        setReturned(changedCloses, returned, chartColor);
+        setAskReturned(changedCloses, askReturned, chartColor);
         addData(stockTicker, changedDates, changedCloses, chartColor);
     });
     timeInvr.children[2].addEventListener('click', function (e) {
         removeData(stockTicker);
-        changedCloses = closes.slice(closes.length-365,closes.length);
-        changedDates = dates.slice(dates.length-365,dates.length);
+        changedCloses = closes.slice(closes.length - 365, closes.length);
+        changedDates = dates.slice(dates.length - 365, dates.length);
         let chartColor = calculateColor(changedCloses);
-        setReturned(changedCloses,returned,chartColor);
-        setAskReturned(changedCloses,askReturned,chartColor);
+        setReturned(changedCloses, returned, chartColor);
+        setAskReturned(changedCloses, askReturned, chartColor);
         addData(stockTicker, changedDates, changedCloses, chartColor);
     });
     timeInvr.children[3].addEventListener('click', function (e) {
         removeData(stockTicker);
         let chartColor = calculateColor(closes);
-        setReturned(closes,returned,chartColor);
-        setAskReturned(closes,askReturned,chartColor);
+        setReturned(closes, returned, chartColor);
+        setAskReturned(closes, askReturned, chartColor);
         addData(stockTicker, dates, closes, chartColor);
     });
 }
-function setReturned(closes,returned,chartColor){
-    if(chartColor == "#ff3300"){
+function setReturned(closes, returned, chartColor) {
+    if (chartColor == "#ff3300") {
         returned.style = "color: #ff3300; position: absolute; top: 470px; left: 2.5%; font-size: 75px; width: 45%; overflow: hidden;";
-        let value = String(closes[0]-closes[closes.length-1]);
-        returned.innerHTML = "-"+value.substring(0,value.indexOf('.')+3);
-    }else {
+        let value = String(closes[0] - closes[closes.length - 1]);
+        returned.innerHTML = "-" + value.substring(0, value.indexOf('.') + 3);
+    } else {
         returned.style = "color: #33cc33; position: absolute; top: 470px; left: 2.5%; font-size: 75px; width: 45%; overflow: hidden;";
-        let value = String(closes[closes.length-1]-closes[0]);
-        returned.innerHTML = "+"+value.substring(0,value.indexOf('.')+3);
+        let value = String(closes[closes.length - 1] - closes[0]);
+        returned.innerHTML = "+" + value.substring(0, value.indexOf('.') + 3);
     }
 }
-function setAskReturned(closes,askReturned,chartColor){
-    let value = String(closes[closes.length-1]/closes[0]-1);
-    if(chartColor == "#ff3300"){
+function setAskReturned(closes, askReturned, chartColor) {
+    let value = String(closes[closes.length - 1] / closes[0] - 1);
+    if (chartColor == "#ff3300") {
         askReturned.style = "color: #ff3300; position: absolute; top: 470px; left: 47.5%; font-size: 75px; width: 45%; text-align: right; overflow: hidden;";
-        askReturned.innerHTML = value.substring(0,value.indexOf('.')+5)+"%";
-    }else {
+        askReturned.innerHTML = value.substring(0, value.indexOf('.') + 5) + "%";
+    } else {
         askReturned.style = "color: #33cc33; position: absolute; top: 470px; left: 47.5%; font-size: 75px; width: 45%; text-align: right; overflow: hidden;";
-        askReturned.innerHTML = "+"+value.substring(0,value.indexOf('.')+5)+"%";
+        askReturned.innerHTML = "+" + value.substring(0, value.indexOf('.') + 5) + "%";
     }
-    
+
 }
-function calculateColor(closes){
-    if(closes[0] > closes[closes.length-1]){
+function calculateColor(closes) {
+    if (closes[0] > closes[closes.length - 1]) {
         return "#ff3300";
-    }else{
+    } else {
         return "#33cc33";
     }
 }
@@ -301,22 +328,22 @@ function removeData(chart) {
     });
     chart.update();
 }
-function tickerTabInit(tag){
+function tickerTabInit(tag) {
     let tab = document.getElementsByClassName('custFuncTabTemp')[0].content.cloneNode(true);
     tab.getElementById('customFuncTab').dataset.ticker = tag;
     tab.getElementById('tickerTag').innerHTML = tag;
     //Gets Dates 
     let d = new Date();
-    let pastDate =d.getFullYear()-5+"-"+(d.getMonth()+1)+"-"+d.getDate();
-    let currentDate = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+    let pastDate = d.getFullYear() - 5 + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+    let currentDate = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
     let chart = tab.getElementById('charta').getContext('2d');
     let timeInvr = tab.getElementById('timeInvr');
     let returned = tab.getElementById('returned');
     let askReturned = tab.getElementById('askedReturned');
-    console.log("start date: "+pastDate+" end date: "+currentDate);
-    setGraph(askReturned,returned,timeInvr,chart,tag,"daily",pastDate,currentDate);
+    console.log("start date: " + pastDate + " end date: " + currentDate);
+    setGraph(askReturned, returned, timeInvr, chart, tag, "daily", pastDate, currentDate);
     console.log(typeof data);
-    
+
     return tab;
 }
 function createTicker(tickerName) {
