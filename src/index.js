@@ -9,7 +9,7 @@ if (localStorage.getItem('apiKey') != null) {
 document.getElementById('addButton').addEventListener('click', function (e) {
     if (localStorage.getItem('apiKey') != null) {
     } else {
-        document.getElementById('exitAdd').style.visibility = undefined;
+        document.getElementById('exitAdd').style.visibility = "inherit";
         document.getElementById('apiLink').style.visibility = 'hidden';
     }
     localStorage.setItem('apiKey', document.getElementById('newLinkText').value);
@@ -282,11 +282,11 @@ async function setGraph(askReturned, returned, timeInvr, chart, symbol, invr, st
 }
 function setReturned(closes, returned, chartColor) {
     if (chartColor == "#ff3300") {
-        returned.style = "color: #ff3300; position: absolute; top: 470px; left: 2.5%; font-size: 75px; width: 45%; overflow: hidden;";
+        returned.style = "color: #ff3300; ";
         let value = String(closes[0] - closes[closes.length - 1]);
         returned.innerHTML = "-" + value.substring(0, value.indexOf('.') + 3);
     } else {
-        returned.style = "color: #33cc33; position: absolute; top: 470px; left: 2.5%; font-size: 75px; width: 45%; overflow: hidden;";
+        returned.style = "color: #33cc33;";
         let value = String(closes[closes.length - 1] - closes[0]);
         returned.innerHTML = "+" + value.substring(0, value.indexOf('.') + 3);
     }
@@ -294,10 +294,10 @@ function setReturned(closes, returned, chartColor) {
 function setAskReturned(closes, askReturned, chartColor) {
     let value = String(closes[closes.length - 1] / closes[0] - 1);
     if (chartColor == "#ff3300") {
-        askReturned.style = "color: #ff3300; position: absolute; top: 470px; left: 47.5%; font-size: 75px; width: 45%; text-align: right; overflow: hidden;";
+        askReturned.style = "color: #ff3300;";
         askReturned.innerHTML = value.substring(0, value.indexOf('.') + 5) + "%";
     } else {
-        askReturned.style = "color: #33cc33; position: absolute; top: 470px; left: 47.5%; font-size: 75px; width: 45%; text-align: right; overflow: hidden;";
+        askReturned.style = "color: #33cc33;";
         askReturned.innerHTML = "+" + value.substring(0, value.indexOf('.') + 5) + "%";
     }
 

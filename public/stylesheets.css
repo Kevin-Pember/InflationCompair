@@ -107,6 +107,7 @@ button:focus, input[type="button"]:focus {
   left: 0;
   top: 35px;
   bottom: 0;
+  overflow-y: auto;
 }
 .textInputTop{
   top: 0;
@@ -165,8 +166,9 @@ button:focus, input[type="button"]:focus {
   position: absolute;
   background-color: var(--numbersColor);
   margin-left: 2.5%;
+  margin-bottom: 10px;
   top: 110px;
-  bottom: 20px;
+  height: auto;
   width: 95%;
   border-radius: 25px;
 }
@@ -192,22 +194,39 @@ button:focus, input[type="button"]:focus {
   border: none;
   border-radius: 25px;
 }
+#justified{
+  margin-top: 470px;
+  display: block;
+  padding-bottom: 10px;
+}
+.dataLabel{
+  background-color: var(--displayColor);
+  width: fit-content;
+  height: fit-content;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+  margin-left: 10px;
+  border-radius: 50px;
+}
 #returned{
-  position: absolute;
-  top: 470px;
-  left: 2.5%;
-  font-size: 75px;
-  width: 45%;
+  font-size: 75px; 
+  width: auto; 
+  height: auto; 
+  text-align: left; 
   overflow: hidden;
+  margin-left: 10px;
 }
 #askedReturned{
-  position: absolute;
-  top: 470px;
-  left: 47.5%;
-  font-size: 75px;
-  width: 45%;
-  text-align: right;
+  font-size: 75px; 
+  width: auto; 
+  height: auto; 
+  text-align: left; 
   overflow: hidden;
+  margin-left: 10px;
 }
 #enterPrompt{
   background-color: var(--translucent);
@@ -218,13 +237,14 @@ button:focus, input[type="button"]:focus {
   height: 100%;
   z-index: 2;
   visibility: hidden;
+  overflow: hidden;
 }
 #prompty{
   background-color: var(--numbersColor);
-  height: 40%;
+  height: 200px;
   width: 80%;
   left: 10%;
-  top: 30%;
+  top: calc(50% - 100px);
   position: absolute;
   border-radius: 25px;
   overflow-y: auto;
@@ -233,7 +253,7 @@ button:focus, input[type="button"]:focus {
   position: absolute;
   width: 80%;
   height: 40px;
-  top: 30%;
+  top: calc(50% - 100px);
   left: 10%;
   background-color: transparent;
   display: block;
@@ -243,8 +263,8 @@ button:focus, input[type="button"]:focus {
   height: 40px;
   border: none;
   border-radius: 50%;
-  bottom: 3%;
-  right: 3%;
+  bottom: 5px;
+  right: 5px;
   position: absolute;
   font-size: 20px;
   color: var(--textColor);
@@ -276,8 +296,8 @@ button:focus, input[type="button"]:focus {
   text-align: center;
 }
 #exitAdd{
-  top:2.5%;
-  right: 2.5%;
+  top:5px;
+  right: 5px;
   position: absolute;
 }
 input:focus, textarea:focus, select:focus{
@@ -286,13 +306,13 @@ input:focus, textarea:focus, select:focus{
 #newLinkText{
   font-family:Arial, Helvetica, sans-serif;
   background-color: var(--displayColor);
-  font-size: 30px;
+  font-size: 5vw;
   margin-left: 2.5%;
   padding-left: 2%;
   margin-top: 40px;
   border-radius: 25px;
-  width: auto;
-  height: 30px;
+  width: calc(3.4vw * 16);
+  height: auto;
   color: var(--textColor);
   border: none;
   resize: none;
@@ -306,4 +326,11 @@ input:focus, textarea:focus, select:focus{
   border-radius: 25px;
   padding: 5px;
   overflow: hidden;
+  visibility: hidden;
+}
+@media only screen and (max-width: 534px) {
+  #funcGrid{
+    position: absolute;
+    grid-template-columns: 50% 50%;
+  }
 }
