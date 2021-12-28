@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/Kevin-Pember/MentorRepo#readme",
   "dependencies": {
-    "yahoo-finance": "^0.3.7"
+    "yahoo-finance": "^0.3.7",
+    "yahoo-stock-prices": "^1.1.0"
   },
   "devDependencies": {
     "webpack": "^5.65.0",
