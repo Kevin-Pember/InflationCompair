@@ -1,3 +1,6 @@
+var yahooStockPrices = require("yahoo-stock-prices");
+const price = await yahooStockPrices.getCurrentPrice('AAPL');
+console.log(price); // 132.05
 var stock;
 if (localStorage.getItem('apiKey') != null) {
     stock = new Stocks(localStorage.getItem('apiKey'));
