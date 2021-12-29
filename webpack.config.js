@@ -31,6 +31,10 @@ const config = {
     module: {
         rules: [
             {
+                test: /\.(js|jsx)$/i,
+                loader: 'babel-loader',
+            },
+            {
                 test: /\.css$/i,
                 use: [stylesHandler,'css-loader'],
             },
@@ -43,12 +47,6 @@ const config = {
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
-    experiments: {
-        asyncWebAssembly: true,
-        syncWebAssembly: true,
-        topLevelAwait: true,
-      },
-    
 };
 
 module.exports = () => {
@@ -62,5 +60,4 @@ module.exports = () => {
         config.mode = 'development';
     }
     return config;
-    
 };
