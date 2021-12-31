@@ -7,9 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="stylesheets.css">
-    <script defer src="../src/stock.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script defer src="../bundle.js"></script>
     <script type="text/javascript"
         src="https://cdn.jsdelivr.net/npm/brython@3.10.1/brython.min.js">
     </script>
@@ -18,7 +16,7 @@
     </script>
 </head>
 
-<body id="mainBody">
+<body id="mainBody" onload="brython()">
     <div id="tab">
         <button class="tablinks" id="mainTab" data-ticker="mainTab"
             onclick="highlightTab(document.getElementById('mainTab'))">
