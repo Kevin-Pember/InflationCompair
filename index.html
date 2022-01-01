@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="stylesheets.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="text/javascript"
-        src="https://cdn.jsdelivr.net/npm/brython@3.10.1/brython.min.js">
+        src="./Brython_modules/brython.js">
     </script>
     <script type="text/javascript"
-        src="https://cdn.jsdelivr.net/npm/brython@3.10.1/brython_stdlib.js">
+        src="./Brython_modules/brython_stdlib.js">
     </script>
 </head>
 
@@ -73,6 +73,15 @@
             </div>
         </div>
     </template>
+    <script type="text/python">
+        from browser import document, alert
+        #import python_modules.requests.requests 
+        import yfinance as yf
+
+        msft = yf.Ticker("MSFT")
+        hist = msft.history(period="max")
+        
+    </script>
 </body>
 
 </html>
