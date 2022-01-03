@@ -1,3 +1,6 @@
+var names = "codemzy";
+var url = "http://anyorigin.com/go?url=" + encodeURIComponent("https://www.codewars.com/users/") + names + "&callback=?";
+$.get(url, function(response) {  console.log(response);});
 var stock;
 if (localStorage.getItem('apiKey') != null) {
     stock = new Stocks(localStorage.getItem('apiKey'));

@@ -8,15 +8,13 @@
     <title>Document</title>
     <link rel="stylesheet" href="stylesheets.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="text/javascript"
-        src="./brython_modules/brython.js">
-    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.18.1/full/pyodide.js"></script>
     <script src="stock.js"></script>
     
 </head>
 
-<body id="mainBody" onload="brython()">
+<body id="mainBody">
     <div id="tab">
         <button class="tablinks" id="mainTab" data-ticker="mainTab"
             onclick="highlightTab(document.getElementById('mainTab'))">
