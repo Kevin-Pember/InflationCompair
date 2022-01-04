@@ -4,14 +4,27 @@ $.get(url, function(response) {  console.log(response);});*/
 
 async function mainPy(){
     let pyodide = await loadPyodide({ indexURL : "https://cdn.jsdelivr.net/pyodide/v0.18.1/full/" });
-    pyodide.loadPackage('pandas');
-  console.log(pyodide.runPython(`
+    await pyodide.loadPackage('pandas');
+    await pyodide.loadPackage("micropip");
+    await pyodide.loadPackage('lxml');
+    console.log(pyodide.runPythonAsync(`
     import sys
-    await micropip.install('yfinance')
-    import yfinance as yf
-    sys.version
+    import pandas as pd
+    import micropip
+    await micropip.install('yfinance-ez')
+
+    import yfinance_ez as yf
+    msft = yf.Ticker("MSFT")
+
+    # get stock info
+    msft.info
+
+    # get historical market data
+    hist = msft.history(period="max")
+    print(1+2)
   `));
 }
+mainPy();
 var stock;
 if (localStorage.getItem('apiKey') != null) {
     stock = new Stocks(localStorage.getItem('apiKey'));
