@@ -1,6 +1,17 @@
-var names = "codemzy";
+/*var names = "codemzy";
 var url = "http://anyorigin.com/go?url=" + encodeURIComponent("https://www.codewars.com/users/") + names + "&callback=?";
-$.get(url, function(response) {  console.log(response);});
+$.get(url, function(response) {  console.log(response);});*/
+
+async function mainPy(){
+    let pyodide = await loadPyodide({ indexURL : "https://cdn.jsdelivr.net/pyodide/v0.18.1/full/" });
+    pyodide.loadPackage('pandas');
+  console.log(pyodide.runPython(`
+    import sys
+    await micropip.install('yfinance')
+    import yfinance as yf
+    sys.version
+  `));
+}
 var stock;
 if (localStorage.getItem('apiKey') != null) {
     stock = new Stocks(localStorage.getItem('apiKey'));
