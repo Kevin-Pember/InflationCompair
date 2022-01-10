@@ -9,11 +9,15 @@ for x in tickers:
     now = int(time.time())
     past = now - (60*60*24*365*5)
     html = None
+    dates = []
+    close = []
     fetchedUrl = 'https://query1.finance.yahoo.com/v7/finance/download/'+ str(x) +'?period1='+str(past)+'&period2='+str(now)+'&interval=1d&events=history&includeAdjustedClose=true'
     with urllib.request.urlopen(fetchedUrl) as f:
-        html = f.read()
-        if x == "CPI":
-            print(html)
-    csv.DictReader
+        html = f.read().splitlines()
+    f = 0
+    for rows in html:
+        print(type(rows))
+        dates.append(rows[1])
+        close.append(rows[5])
+    #if(x == 'CPI'):
         
-    
