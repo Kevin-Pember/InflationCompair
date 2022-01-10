@@ -1,24 +1,4 @@
 
-async function yahooFinanceScrape(ticker) {
-    let period1 = Date.now()-(31556926)*5;
-    let period2 = Date.now();
-    var url = "https://query1.finance.yahoo.com/v7/finance/download/"+ticker+"?period1="+period1+"&period2="+period2+"&interval=1d&events=history&includeAdjustedClose=true";
-    $.ajax({
-        type: "GET",  
-        url: url,
-        dataType: "csv",    
-        contentType: 'csv',   
-        success: function(response)  
-        {
-          console.log("Nothing wen't wrong yet")
-          data = $.csv.toArrays(response);
-          console.log(data);
-        }, 
-        error: function(err) {
-            console.log("Error");
-          } 
-      });
-}
 var stock;
 if (localStorage.getItem('apiKey') != null) {
     stock = new Stocks(localStorage.getItem('apiKey'));
