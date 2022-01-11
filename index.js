@@ -368,7 +368,7 @@ function createOrderedTicker(tickerName, Dates, Prices){
         tickerClicked(e);
     });
     clon.getElementById('customFuncButton').id = tickerName;
-    targetEl.appendChild(clon);
+    
 }
 function highlightTab(element) {
     console.log(functionColor + " & " + displayColor);
