@@ -351,7 +351,19 @@ function createTicker(tickerName) {
     let temp = document.getElementsByClassName("customFuncTemplate")[0], clon = temp.content.cloneNode(true), targetEl = document.getElementById("funcGrid");
     clon.getElementById("customFuncButton").innerHTML = "<h2>" + tickerName + "</h2>";
     clon.getElementById('customFuncButton').dataset.ticker = tickerName;
-    clon.ge
+    clon.getElementById('customFuncButton').dataset.dates = 
+    clon.getElementById('customFuncButton').addEventListener("click", function (e) {
+        tickerClicked(e);
+    });
+    clon.getElementById('customFuncButton').id = tickerName;
+    targetEl.appendChild(clon);
+}
+function createOrderedTicker(tickerName, Dates, Prices){
+    let temp = document.getElementsByClassName("customFuncTemplate")[0], clon = temp.content.cloneNode(true), targetEl = document.getElementById("funcGrid");
+    clon.getElementById("customFuncButton").innerHTML = "<h2>" + tickerName + "</h2>";
+    clon.getElementById('customFuncButton').dataset.ticker = tickerName;
+    clon.getElementById('customFuncButton').dataset.dates = Dates
+    clon.getElementById('customFuncButton').dataset.prices = Prices
     clon.getElementById('customFuncButton').addEventListener("click", function (e) {
         tickerClicked(e);
     });

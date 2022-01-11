@@ -9,9 +9,11 @@ for x in tickers:
     now = int(time.time())
     past = now - (60*60*24*365*5)
     html = None
+    # options are 1d, 1wk, 1mo
+    freak = "1wk"
     dates = []
     close = []
-    fetchedUrl = 'https://query1.finance.yahoo.com/v7/finance/download/'+ str(x) +'?period1='+str(past)+'&period2='+str(now)+'&interval=1d&events=history&includeAdjustedClose=true'
+    fetchedUrl = 'https://query1.finance.yahoo.com/v7/finance/download/'+ str(x) +'?period1='+str(past)+'&period2='+str(now)+'&interval='+freak+'&events=history&includeAdjustedClose=true'
     with urllib.request.urlopen(fetchedUrl) as f:
         html = f.read().decode('utf-8').splitlines()
     f = 0
@@ -22,4 +24,4 @@ for x in tickers:
             close.append(list[5])
         f += 1
     if(x == 'CPI'):
-        print(close)
+        print(dates)
