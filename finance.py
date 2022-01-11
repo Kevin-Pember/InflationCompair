@@ -13,11 +13,13 @@ for x in tickers:
     close = []
     fetchedUrl = 'https://query1.finance.yahoo.com/v7/finance/download/'+ str(x) +'?period1='+str(past)+'&period2='+str(now)+'&interval=1d&events=history&includeAdjustedClose=true'
     with urllib.request.urlopen(fetchedUrl) as f:
-        html = f.read().splitlines()
+        html = f.read().decode('utf-8').splitlines()
     f = 0
     for rows in html:
-        print(type(rows))
-        dates.append(rows[1])
-        close.append(rows[5])
-    #if(x == 'CPI'):
-        
+        if f > 0:
+            list = rows.split(',')
+            dates.append(list[0])
+            close.append(list[5])
+        f += 1
+    if(x == 'CPI'):
+        print(close)
