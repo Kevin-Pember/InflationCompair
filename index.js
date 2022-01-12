@@ -1,5 +1,4 @@
 
-var stock;
 if (localStorage.getItem('apiKey') != null) {
     stock = new Stocks(localStorage.getItem('apiKey'));
 } else {
@@ -369,6 +368,14 @@ function createOrderedTicker(tickerName, Dates, Prices){
     });
     clon.getElementById('customFuncButton').id = tickerName;
     
+}
+function backfill(Dates,Prices){
+    let today = new Date();
+    let past = new Date();
+    past.setFullYear(past.getFullYear() - 3);
+}
+function parseYear(date){
+    return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
 }
 function highlightTab(element) {
     console.log(functionColor + " & " + displayColor);
