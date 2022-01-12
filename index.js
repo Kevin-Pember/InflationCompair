@@ -367,15 +367,48 @@ function createOrderedTicker(tickerName, Dates, Prices){
         tickerClicked(e);
     });
     clon.getElementById('customFuncButton').id = tickerName;
-    
-}
-function backfill(Dates,Prices){
-    let today = new Date();
     let past = new Date();
     past.setFullYear(past.getFullYear() - 3);
+    if(closestDate(Dates,parseYear(past)) != "err"){
+        console.log("Date succes for " + tickerName);
+    }else {
+        console.log('%c Err at '+tickerName, 'color: red;');
+    }
+}
+function backfill(Dates,Prices,targetDate){
+    let today = new Date();
+    let closestDate = closestDate(Dates,targetDate);
+    past = new Date(closestDate);
+}
+function closestDate(Dates, targetDate){
+    let index = 0;
+    console.log("Looking For "+targetDate);
+    for(let date of Dates){
+        if(date.includes(targetDate.substring(0,targetDate.length - 3))){
+            let loops = 0;
+            while(!Dates.includes(targetDate)){
+                console.log("Looping")
+                targetDate = targetDate.substring(0, targetDate.length - 2) + addZero(parseInt(targetDate.substring(targetDate.length - 2)) + 1);
+                console.log("Now Checking "+targetDate)
+                loops++;
+                if(loops > 30){
+                    console.log("Loop error code didn't work")
+                    return "err";
+                }
+            }
+            return targetDate;
+        }
+    }
+}
+function addZero(num){
+    if(num < 10){
+        return "0" + num;
+    }else {
+        return num;
+    }
 }
 function parseYear(date){
-    return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+    return date.getFullYear()+"-"+addZero(date.getMonth()+1)+"-"+date.getDate();
 }
 function highlightTab(element) {
     console.log(functionColor + " & " + displayColor);
