@@ -1,4 +1,5 @@
 
+console.log("%cStarting Shit", 'color: green;');
 if (localStorage.getItem('apiKey') != null) {
     stock = new Stocks(localStorage.getItem('apiKey'));
 } else {
@@ -350,14 +351,14 @@ function createTicker(tickerName) {
     let temp = document.getElementsByClassName("customFuncTemplate")[0], clon = temp.content.cloneNode(true), targetEl = document.getElementById("funcGrid");
     clon.getElementById("customFuncButton").innerHTML = "<h2>" + tickerName + "</h2>";
     clon.getElementById('customFuncButton').dataset.ticker = tickerName;
-    clon.getElementById('customFuncButton').dataset.dates = 
-    clon.getElementById('customFuncButton').addEventListener("click", function (e) {
-        tickerClicked(e);
-    });
+    clon.getElementById('customFuncButton').dataset.dates =
+        clon.getElementById('customFuncButton').addEventListener("click", function (e) {
+            tickerClicked(e);
+        });
     clon.getElementById('customFuncButton').id = tickerName;
     targetEl.appendChild(clon);
 }
-function createOrderedTicker(tickerName, Dates, Prices){
+function createOrderedTicker(tickerName, Dates, Prices) {
     let temp = document.getElementsByClassName("customFuncTemplate")[0], clon = temp.content.cloneNode(true), targetEl = document.getElementById("funcGrid");
     clon.getElementById("customFuncButton").innerHTML = "<h2>" + tickerName + "</h2>";
     clon.getElementById('customFuncButton').dataset.ticker = tickerName;
@@ -369,46 +370,51 @@ function createOrderedTicker(tickerName, Dates, Prices){
     clon.getElementById('customFuncButton').id = tickerName;
     let past = new Date();
     past.setFullYear(past.getFullYear() - 3);
-    if(closestDate(Dates,parseYear(past)) != "err"){
+    if (closestDate(Dates, parseYear(past)) != "err") {
         console.log("Date succes for " + tickerName);
-    }else {
-        console.log('%c Err at '+tickerName, 'color: red;');
+    } else {
+        console.log('%c Err at ' + tickerName, 'color: red;');
     }
 }
-function backfill(Dates,Prices,targetDate){
+function backfill(Dates, Prices, targetDate) {
     let today = new Date();
-    let closestDate = closestDate(Dates,targetDate);
-    past = new Date(closestDate);
+    let closestDate = closestDate(Dates, targetDate);
+    let past = new Date(closestDate[0]);
+    let index = closestDate[1];
+    while(past < today){
+        let nextWk = past.setDate(past.getDate() + 7);
+        if(!Dates.includes(parseYear(nextWk))){
+            Dates.splice(index+1, 0, item);;
+            Prices.splice(index+1, 0, Prices[index]);
+        }
+        past.setDate(past.getDate() + 7);
+        index++;
+    }
 }
-function closestDate(Dates, targetDate){
+function closestDate(Dates, targetDate) {
     let index = 0;
-    console.log("Looking For "+targetDate);
-    for(let date of Dates){
-        if(date.includes(targetDate.substring(0,targetDate.length - 3))){
-            let loops = 0;
-            while(!Dates.includes(targetDate)){
-                console.log("Looping")
-                targetDate = targetDate.substring(0, targetDate.length - 2) + addZero(parseInt(targetDate.substring(targetDate.length - 2)) + 1);
-                console.log("Now Checking "+targetDate)
-                loops++;
-                if(loops > 30){
-                    console.log("Loop error code didn't work")
-                    return "err";
-                }
-            }
-            return targetDate;
+    console.log("Looking For " + targetDate);
+    let loops = 0;
+    while (!Dates.includes(targetDate)) {
+        console.log("Looping")
+        targetDate = targetDate.substring(0, targetDate.length - 2) + addZero(parseInt(targetDate.substring(targetDate.length - 2)) + 1);
+        console.log("Now Checking " + targetDate)
+        loops++;
+        if (loops > 30) {
+            console.log("%c Loop error code didn't work", 'color: red;');
+            return "err";
         }
     }
 }
-function addZero(num){
-    if(num < 10){
+function addZero(num) {
+    if (num < 10) {
         return "0" + num;
-    }else {
+    } else {
         return num;
     }
 }
-function parseYear(date){
-    return date.getFullYear()+"-"+addZero(date.getMonth()+1)+"-"+date.getDate();
+function parseYear(date) {
+    return date.getFullYear() + "-" + addZero(date.getMonth() + 1) + "-" + date.getDate();
 }
 function highlightTab(element) {
     console.log(functionColor + " & " + displayColor);
