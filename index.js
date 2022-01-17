@@ -1,4 +1,4 @@
-
+var benchROR = 0.0;
 console.log("%cStarting Shit", 'color: green;');
 if (localStorage.getItem('apiKey') != null) {
     stock = new Stocks(localStorage.getItem('apiKey'));
@@ -341,9 +341,7 @@ function tickerTabInit(tag) {
     let timeInvr = tab.getElementById('timeInvr');
     let returned = tab.getElementById('returned');
     let askReturned = tab.getElementById('askedReturned');
-    console.log("start date: " + pastDate + " end date: " + currentDate);
     setGraph(askReturned, returned, timeInvr, chart, tag, "daily", pastDate, currentDate);
-    console.log(typeof data);
 
     return tab;
 }
@@ -358,6 +356,16 @@ function createTicker(tickerName) {
     clon.getElementById('customFuncButton').id = tickerName;
     targetEl.appendChild(clon);
 }
+function spBench(Dates,Prices){
+    console.log("SP Benchmark Running");
+    let items = backfill(Dates,Prices,past);
+    Dates = items[0];
+    Prices = items[1];
+    let past = new Date();
+    past.setFullYear(past.getFullYear() - 1);
+    let pastDateIndex = closestDate(Dates, parseYear(past))[1];
+    benchROR = (Prices[Prices.length - 1] - Prices[pastDateIndex]) / Prices[pastDateIndex];
+}
 function createOrderedTicker(tickerName, Dates, Prices) {
     let temp = document.getElementsByClassName("customFuncTemplate")[0], clon = temp.content.cloneNode(true), targetEl = document.getElementById("funcGrid");
     clon.getElementById("customFuncButton").innerHTML = "<h2>" + tickerName + "</h2>";
@@ -369,42 +377,37 @@ function createOrderedTicker(tickerName, Dates, Prices) {
     });
     clon.getElementById('customFuncButton').id = tickerName;
     let past = new Date();
-    past.setFullYear(past.getFullYear() - 3);
-    if (closestDate(Dates, parseYear(past)) != "err") {
-        console.log("Date succes for " + tickerName);
-    } else {
-        console.log('%c Err at ' + tickerName, 'color: red;');
-    }
+    past.setFullYear(past.getFullYear() - 1);
+    backfill(Dates,Prices,past);
 }
 function backfill(Dates, Prices, targetDate) {
     let today = new Date();
-    let closestDate = closestDate(Dates, targetDate);
-    let past = new Date(closestDate[0]);
-    let index = closestDate[1];
-    while(past < today){
-        let nextWk = past.setDate(past.getDate() + 7);
-        if(!Dates.includes(parseYear(nextWk))){
-            Dates.splice(index+1, 0, item);;
-            Prices.splice(index+1, 0, Prices[index]);
+    let closeDate = closestDate(Dates, parseYear(targetDate));
+    let past = new Date(closeDate[0]);
+    past.setDate(past.getDate() + 1);
+    let index = closeDate[1];
+    for(let i = index; i < Dates.length; i++){
+        if(Dates[i] != parseYear(past)){
+            console.log("%c Date Unexpected Found", "color: red;");
+            Dates.splice(i-1, 0, past);
+            Prices.splice(i-1, 0, Prices[i-1]);
         }
         past.setDate(past.getDate() + 7);
-        index++;
     }
+    return [Dates, Prices];
 }
 function closestDate(Dates, targetDate) {
     let index = 0;
-    console.log("Looking For " + targetDate);
     let loops = 0;
     while (!Dates.includes(targetDate)) {
-        console.log("Looping")
         targetDate = targetDate.substring(0, targetDate.length - 2) + addZero(parseInt(targetDate.substring(targetDate.length - 2)) + 1);
-        console.log("Now Checking " + targetDate)
         loops++;
         if (loops > 30) {
             console.log("%c Loop error code didn't work", 'color: red;');
             return "err";
         }
     }
+    return [targetDate, Dates.indexOf(targetDate)];
 }
 function addZero(num) {
     if (num < 10) {
@@ -414,7 +417,7 @@ function addZero(num) {
     }
 }
 function parseYear(date) {
-    return date.getFullYear() + "-" + addZero(date.getMonth() + 1) + "-" + date.getDate();
+    return date.getFullYear() + "-" + addZero(date.getMonth() + 1) + "-" + addZero(date.getDate());
 }
 function highlightTab(element) {
     console.log(functionColor + " & " + displayColor);
