@@ -1,4 +1,4 @@
-var benchROR = 0.0;
+var benchROR = [];
 console.log("%cStarting Shit", 'color: green;');
 if (localStorage.getItem('apiKey') != null) {
     stock = new Stocks(localStorage.getItem('apiKey'));
@@ -134,12 +134,8 @@ const tickers = [
     'SIFAX',
     'CAAHX',
 ];
-console.log("hello")
-for (let ticker of tickers) {
-    createTicker(ticker);
-}
 function searchChange(e) {
-    let targetEl = e.target;
+    /*let targetEl = e.target;
     let gridContainer = document.getElementById("funcGrid");
     while (gridContainer.firstChild) {
         gridContainer.removeChild(gridContainer.firstChild);
@@ -149,7 +145,7 @@ function searchChange(e) {
         if (item.search(targetEl.value) != -1) {
             createTicker(item);
         }
-    }
+    }*/
 }
 function tickerClicked(e) {
     console.log("Stock element is");
@@ -345,7 +341,7 @@ function tickerTabInit(tag) {
 
     return tab;
 }
-function createTicker(tickerName) {
+/*function createTicker(tickerName) {
     let temp = document.getElementsByClassName("customFuncTemplate")[0], clon = temp.content.cloneNode(true), targetEl = document.getElementById("funcGrid");
     clon.getElementById("customFuncButton").innerHTML = "<h2>" + tickerName + "</h2>";
     clon.getElementById('customFuncButton').dataset.ticker = tickerName;
@@ -355,30 +351,52 @@ function createTicker(tickerName) {
         });
     clon.getElementById('customFuncButton').id = tickerName;
     targetEl.appendChild(clon);
-}
-function spBench(Dates,Prices){
-    console.log("SP Benchmark Running");
-    let items = backfill(Dates,Prices,past);
-    Dates = items[0];
-    Prices = items[1];
-    let past = new Date();
-    past.setFullYear(past.getFullYear() - 1);
-    let pastDateIndex = closestDate(Dates, parseYear(past))[1];
-    benchROR = (Prices[Prices.length - 1] - Prices[pastDateIndex]) / Prices[pastDateIndex];
-}
+}*/
 function createOrderedTicker(tickerName, Dates, Prices) {
     let temp = document.getElementsByClassName("customFuncTemplate")[0], clon = temp.content.cloneNode(true), targetEl = document.getElementById("funcGrid");
     clon.getElementById("customFuncButton").innerHTML = "<h2>" + tickerName + "</h2>";
-    clon.getElementById('customFuncButton').dataset.ticker = tickerName;
-    clon.getElementById('customFuncButton').dataset.dates = Dates
-    clon.getElementById('customFuncButton').dataset.prices = Prices
+    clon.getElementById('tickerDiv').dataset.ticker = tickerName;
+    clon.getElementById('tickerDiv').dataset.dates = Dates
+    clon.getElementById('tickerDiv').dataset.prices = Prices
     clon.getElementById('customFuncButton').addEventListener("click", function (e) {
         tickerClicked(e);
     });
     clon.getElementById('customFuncButton').id = tickerName;
     let past = new Date();
     past.setFullYear(past.getFullYear() - 1);
-    backfill(Dates,Prices,past);
+    //console.log("Working on " + tickerName);
+    let fill = backfill(Dates,Prices,past);
+    Dates = fill[0];
+    Prices = fill[1];
+    let tracking = trackingError(Prices);
+    let returnOf =  Prices[Prices.length - 1]-Prices[0];
+    let actualReturn =  returnOf / tracking;
+    clon.getElementById('return').innerHTML = actualReturn;
+    clon.getElementById('tickerDiv').dataset.return = actualReturn;
+    findPOS(actualReturn, clon);
+}
+function findPOS(returnOf, element){
+    let targetEl = document.getElementById("funcGrid");
+    let otherETFs = document.getElementsByClassName('tickerTag');
+    let position
+    let got = false;
+    if(otherETFs != null){
+        position = otherETFs.length-1;
+    }else {
+        position = otherETFs.length;
+    }
+    for(let i = 0; i < otherETFs.length; i++){
+        if(otherETFs[i].dataset.return < returnOf){
+            position = i;
+            got = true;
+            break;
+        }
+    }
+    if(got){
+        targetEl.insertBefore(element, otherETFs[position]);
+    }else {
+        targetEl.appendChild(element);
+    }
 }
 function backfill(Dates, Prices, targetDate) {
     let today = new Date();
@@ -391,10 +409,20 @@ function backfill(Dates, Prices, targetDate) {
             console.log("%c Date Unexpected Found", "color: red;");
             Dates.splice(i-1, 0, past);
             Prices.splice(i-1, 0, Prices[i-1]);
+            break;
         }
         past.setDate(past.getDate() + 7);
     }
     return [Dates, Prices];
+}
+function trackingError(prices){
+    let squaredPrice = 0.0;
+    let first = prices[0];
+    prices.shift();
+    for(let price of prices){
+        squaredPrice += Math.pow(price-first, 2);
+    }
+    return Math.sqrt(squaredPrice / prices.length);
 }
 function closestDate(Dates, targetDate) {
     let index = 0;
