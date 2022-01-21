@@ -371,7 +371,8 @@ function createOrderedTicker(tickerName, Dates, Prices) {
     let tracking = trackingError(Prices);
     let returnOf =  Prices[Prices.length - 1]-Prices[0];
     let actualReturn =  returnOf / tracking;
-    clon.getElementById('return').innerHTML = actualReturn;
+    let returnedString = ""+actualReturn;
+    clon.getElementById('return').innerHTML = returnedString.substring(0, returnedString.indexOf('.') + 3) + "%";
     clon.getElementById('tickerDiv').dataset.return = actualReturn;
     findPOS(actualReturn, clon);
 }

@@ -52,6 +52,7 @@ input:focus, #EquationFunc:focus, select:focus{
   border-radius: 25px 25px 0 0;
   background-color: var(--numbersColor);
   grid-template-columns: 33.3333% 33.3333% 33.3333%;
+  grid-auto-rows: 140px;
   display: grid;
   flex-wrap: wrap;
   top: 121px;
@@ -137,20 +138,16 @@ button:focus, input[type="button"]:focus {
 #minusButton{
   margin-left: 40px;
 }
-
-#funcGrid div{
+.tickerTag{
   width: 80%;
   height: 130px;
-  margin-left: 10%;
   align-items: center;
   justify-content: center;
   -webkit-tap-highlight-color: transparent;
 }
-returnDisplay
-#customFuncButton{
-  width: 80%;
-  margin-left: 10%;
-  margin-left: 2.25%;
+.returnDisplay{
+  z-index: 1;
+  width:75px;
 }
 .tickerTag button{
   width: 100%;
@@ -161,8 +158,8 @@ returnDisplay
   font-size: 25px;
   border: none;
   display: flex;
+  margin-top: -15px;
   margin-left: 10%;
-  margin-top: 20px;
   align-items: center;
   justify-content: center;
   -webkit-tap-highlight-color: transparent;
