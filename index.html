@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/brython_modules/brython.js"></script>
     <script src="/brython_modules/brython_stdlib.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="stock.js"></script>
     
 </head>
@@ -26,8 +27,13 @@
         </template>
         <img id="settingsCogIcon" src="Images/SettingsCogWhite.svg" height="100%">
     </div>
-    <div id="MainContent" class="tabcontent" style="display:flex" data-ticker="mainTab">
-        <input type="text" class="textInputTop" id="searchArea" placeholder="Search" oninput="searchChange(event)">
+    <div id="MainContent" class="tabcontent" data-ticker="mainTab">
+        <details id="graphDetails">
+            <summary class="secondaryHeaders">Graph</summary>
+            <div id="graphContainer">
+                <canvas id="graph"  height="400"></canvas>
+            </div>
+        </details>
         <div id="funcGrid">
 
         </div>
@@ -37,7 +43,6 @@
                     <h3 id="return"></h3>
                 </div>
                 <button class="customFuncLinks" id="customFuncButton">
-                    <h2>Equation</h2>New Function
                 </button>
             </div>
         </template>

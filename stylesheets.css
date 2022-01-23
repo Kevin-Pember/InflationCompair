@@ -48,18 +48,17 @@ input:focus, #EquationFunc:focus, select:focus{
   outline: none;
 }
 #funcGrid{
-  position: absolute;
-  border-radius: 25px 25px 0 0;
+  position: relative;
+  border-radius: 25px;
   background-color: var(--numbersColor);
-  grid-template-columns: 33.3333% 33.3333% 33.3333%;
+  grid-template-columns: 50% 50%;
   grid-auto-rows: 140px;
   display: grid;
   flex-wrap: wrap;
-  top: 121px;
-  bottom: 0px;
-  left: 0;
-  right: 0;
-  overflow-y: auto;
+  width: 95%;
+  margin-left: 2.5%;
+  margin-bottom: 25px;
+  height: auto;
   
 }
 #tab {
@@ -110,12 +109,10 @@ button:focus, input[type="button"]:focus {
   bottom: 0;
   overflow-y: auto;
 }
-.textInputTop{
+#graphDetails{
   top: 0;
   left: 0;
   width: 100%;
-  resize:none;
-  border-style: none;
   padding: 10px;
   padding-top: 25px;
   color: var(--textColor);
@@ -124,7 +121,6 @@ button:focus, input[type="button"]:focus {
   text-align: end;
   background-color: var(--displayColor);
   z-index: 0;
-  position: absolute;
 }
 .clearModifiers{
   top: 0;
@@ -139,11 +135,13 @@ button:focus, input[type="button"]:focus {
   margin-left: 40px;
 }
 .tickerTag{
-  width: 80%;
+  width: 95%;
+  margin-left: 2.5%;
   height: 130px;
   align-items: center;
   justify-content: center;
   -webkit-tap-highlight-color: transparent;
+  padding-top: 10px;
 }
 .returnDisplay{
   z-index: 1;
@@ -159,7 +157,6 @@ button:focus, input[type="button"]:focus {
   border: none;
   display: flex;
   margin-top: -15px;
-  margin-left: 10%;
   align-items: center;
   justify-content: center;
   -webkit-tap-highlight-color: transparent;
@@ -332,7 +329,6 @@ input:focus, textarea:focus, select:focus{
 }
 @media only screen and (max-width: 534px) {
   #funcGrid{
-    position: absolute;
     grid-template-columns: 50% 50%;
   }
 }
