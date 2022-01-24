@@ -12,15 +12,7 @@
     <script src="/brython_modules/brython_stdlib.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        var apiUrl = 'https://www.statbureau.org/get-data-jsonp?jsoncallback=?';
         
-        $.getJSON(apiUrl, {
-                country: 'united-states',
-                format: true
-            })
-              .done(function (data) {
-                  console.log(data);
-              });
     /*let chart = document.getElementById('graph');
     let stockTicker = new Chart(chart, {
         type: 'line',
@@ -58,17 +50,6 @@
 </head>
 
 <body id="mainBody" onload="brython()">
-    <div id="tab">
-        <button class="tablinks" id="mainTab" data-ticker="mainTab"
-            onclick="highlightTab(document.getElementById('mainTab'))">
-            <h3>Search</h3>
-        </button>
-        <template class="newTab">
-            <button id="tabButton" class="tablinks" data-tabMap="custFunc">thing<img id="tabRemove"
-                    src="Images/xIconWhite.svg" width="35px"></button>
-        </template>
-        <img id="settingsCogIcon" src="Images/SettingsCogWhite.svg" height="100%">
-    </div>
     <div id="MainContent" class="tabcontent" data-ticker="mainTab">
         <details id="graphDetails">
             <summary class="secondaryHeaders">Graph</summary>
@@ -82,7 +63,7 @@
         <template class="customFuncTemplate">
             <div class="tickerTag" id="tickerDiv">
                 <div class="returnDisplay">
-                    <h3 id="return"></h3>
+                    <h3 id="return" class="returnText"></h3>
                 </div>
                 <button class="customFuncLinks" id="customFuncButton">
                 </button>
@@ -124,7 +105,7 @@
         </div>
     </template>
     <script src="index.js"></script>
-    <!--<script type="text/python">
+    <script type="text/python">
         from browser import document, window
         import urllib.request
         import time
@@ -152,7 +133,7 @@
                     close.append(list[5])
                 f += 1
             window.createOrderedTicker(x,dates,close)
-    </script>-->
+    </script>
 </body>
 
 </html>

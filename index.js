@@ -18,10 +18,6 @@ document.getElementById('addButton').addEventListener('click', function (e) {
     stock = new Stocks(localStorage.getItem('apiKey'));
     document.getElementById('enterPrompt').style.visibility = 'hidden';
 });
-document.getElementById('settingsCogIcon').addEventListener('click', function (e) {
-    document.getElementById('enterPrompt').style.visibility = 'visible';
-    document.getElementById('newLinkText').value = localStorage.getItem('apiKey');
-});
 document.getElementById('exitAdd').addEventListener('click', function (e) {
     document.getElementById('enterPrompt').style.visibility = 'hidden';
 });
@@ -136,43 +132,29 @@ const tickers = [
     'CAAHX',
 ];
 function initPage(){
-    var apiUrl = 'https://www.statbureau.org/get-data-json?jsoncallback=?';
-    $.getJSON(apiUrl, {
-        country: 'united-states'
-    }).done(function (data) {
-        console.log(data);
-    });
-    /*let chart = document.getElementById('graph');
-    let stockTicker = new Chart(chart, {
-        type: 'line',
-        data: {
-            labels: dates,
-            datasets: [{
-                data: closes,
-                label: 'Price',
-                fontColor: '#FFFFFF',
-                borderColor: chartColor,
-                backgroundColor: chartColor,
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            elements: {
-                point: {
-                    radius: 0
-                }
-            },
-            plugins: {
-                legend: {
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'circle',
+    var apiUrl = 'https://www.statbureau.org/get-data-jsonp?jsoncallback=?';
+    let array = [];
+        $.getJSON(apiUrl, {
+                country: 'united-states',
+                format: true
+            })
+              .done(function (data) {
+                  let target = new Date();
+                  let stringDate = (target.getFullYear()-5) + '-' + addZero(target.getMonth() + 1) + '-01';
+                  for(let obj of data){
+                    let rate = obj.InflationRateFormatted;
+                    let date = obj.MonthFormatted;
+                    if(date != stringDate){
+                    array.unshift({
+                        "rate": rate,
+                        "date": date
+                    })
+                    }else {
+                        break;
                     }
-                }
-            }
-        }
-    })*/
+                  }
+              });
+        console.log(array)
 }
 function tickerClicked(e) {
     console.log("Stock element is");
@@ -380,10 +362,6 @@ function tickerTabInit(tag) {
     targetEl.appendChild(clon);
 }*/
 function createOrderedTicker(tickerName, Dates, Prices) {
-    if(tickerName == "CPI"){
-        console.log(Dates)
-        console.log(Prices)
-    }
     let temp = document.getElementsByClassName("customFuncTemplate")[0], clon = temp.content.cloneNode(true), targetEl = document.getElementById("funcGrid");
     clon.getElementById("customFuncButton").innerHTML = "<h2>" + tickerName + "</h2>";
     clon.getElementById('tickerDiv').dataset.ticker = tickerName;
@@ -401,7 +379,6 @@ function createOrderedTicker(tickerName, Dates, Prices) {
     //Prices = fill[1];
     let tracking = trackingError(Prices);
     let returnOf =  Prices[Prices.length - 1]-Prices[0];
-    console.log(returnOf + " & " + tracking);
     let actualReturn =  returnOf / tracking;
     let returnedString = ""+actualReturn;
     clon.getElementById('return').innerHTML = returnedString.substring(0, returnedString.indexOf('.') + 3) + "%";
@@ -449,7 +426,6 @@ function backfill(Dates, Prices, targetDate) {
     return [Dates, Prices];
 }
 function trackingError(prices){
-    console.log(prices.length);
     let squaredPrice = 0.0;
     let secondary = prices;
     let first = prices[0];
@@ -457,7 +433,6 @@ function trackingError(prices){
     for(let price of prices){
         squaredPrice += Math.pow((price-first), 2);
     }
-    console.log(squaredPrice)
     return Math.sqrt(squaredPrice / secondary.length);
 }
 function closestDate(Dates, targetDate) {
