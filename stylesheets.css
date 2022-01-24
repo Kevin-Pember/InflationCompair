@@ -110,16 +110,19 @@ button:focus, input[type="button"]:focus {
   overflow-y: auto;
 }
 #graphDetails{
+  border-radius: 25px;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 95%;
+  margin-left: 2.5%;
   padding: 10px;
-  padding-top: 25px;
+  margin-top: 25px;
+  margin-bottom: 25px;
   color: var(--textColor);
   align-content: end;
   font-size: 75px;
   text-align: end;
-  background-color: var(--displayColor);
+  background-color: var(--numbersColor);
   z-index: 0;
 }
 .clearModifiers{
