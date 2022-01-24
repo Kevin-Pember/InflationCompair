@@ -1,3 +1,4 @@
+initPage();
 var benchROR = [];
 console.log("%cStarting Shit", 'color: green;');
 if (localStorage.getItem('apiKey') != null) {
@@ -134,18 +135,44 @@ const tickers = [
     'SIFAX',
     'CAAHX',
 ];
-function searchChange(e) {
-    /*let targetEl = e.target;
-    let gridContainer = document.getElementById("funcGrid");
-    while (gridContainer.firstChild) {
-        gridContainer.removeChild(gridContainer.firstChild);
-    }
-    for (let item of tickers) {
-        console.log(item);
-        if (item.search(targetEl.value) != -1) {
-            createTicker(item);
+function initPage(){
+    var apiUrl = 'https://www.statbureau.org/get-data-json?jsoncallback=?';
+    $.getJSON(apiUrl, {
+        country: 'united-states'
+    }).done(function (data) {
+        console.log(data);
+    });
+    /*let chart = document.getElementById('graph');
+    let stockTicker = new Chart(chart, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [{
+                data: closes,
+                label: 'Price',
+                fontColor: '#FFFFFF',
+                borderColor: chartColor,
+                backgroundColor: chartColor,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            elements: {
+                point: {
+                    radius: 0
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
+                }
+            }
         }
-    }*/
+    })*/
 }
 function tickerClicked(e) {
     console.log("Stock element is");
@@ -353,6 +380,10 @@ function tickerTabInit(tag) {
     targetEl.appendChild(clon);
 }*/
 function createOrderedTicker(tickerName, Dates, Prices) {
+    if(tickerName == "CPI"){
+        console.log(Dates)
+        console.log(Prices)
+    }
     let temp = document.getElementsByClassName("customFuncTemplate")[0], clon = temp.content.cloneNode(true), targetEl = document.getElementById("funcGrid");
     clon.getElementById("customFuncButton").innerHTML = "<h2>" + tickerName + "</h2>";
     clon.getElementById('tickerDiv').dataset.ticker = tickerName;
@@ -365,11 +396,12 @@ function createOrderedTicker(tickerName, Dates, Prices) {
     let past = new Date();
     past.setFullYear(past.getFullYear() - 1);
     //console.log("Working on " + tickerName);
-    let fill = backfill(Dates,Prices,past);
-    Dates = fill[0];
-    Prices = fill[1];
+    //let fill = backfill(Dates,Prices,past);
+    //Dates = fill[0];
+    //Prices = fill[1];
     let tracking = trackingError(Prices);
     let returnOf =  Prices[Prices.length - 1]-Prices[0];
+    console.log(returnOf + " & " + tracking);
     let actualReturn =  returnOf / tracking;
     let returnedString = ""+actualReturn;
     clon.getElementById('return').innerHTML = returnedString.substring(0, returnedString.indexOf('.') + 3) + "%";
@@ -417,13 +449,16 @@ function backfill(Dates, Prices, targetDate) {
     return [Dates, Prices];
 }
 function trackingError(prices){
+    console.log(prices.length);
     let squaredPrice = 0.0;
+    let secondary = prices;
     let first = prices[0];
     prices.shift();
     for(let price of prices){
-        squaredPrice += Math.pow(price-first, 2);
+        squaredPrice += Math.pow((price-first), 2);
     }
-    return Math.sqrt(squaredPrice / prices.length);
+    console.log(squaredPrice)
+    return Math.sqrt(squaredPrice / secondary.length);
 }
 function closestDate(Dates, targetDate) {
     let index = 0;

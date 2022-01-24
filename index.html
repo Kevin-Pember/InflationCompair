@@ -11,6 +11,48 @@
     <script src="/brython_modules/brython.js"></script>
     <script src="/brython_modules/brython_stdlib.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        var apiUrl = 'https://www.statbureau.org/get-data-json?jsoncallback=?';
+        
+        $.getJSON(apiUrl, {
+                country: 'united-states',
+                format: true
+            })
+              .done(function (data) {
+                  console.log(data);
+              });
+    /*let chart = document.getElementById('graph');
+    let stockTicker = new Chart(chart, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [{
+                data: closes,
+                label: 'Price',
+                fontColor: '#FFFFFF',
+                borderColor: chartColor,
+                backgroundColor: chartColor,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            elements: {
+                point: {
+                    radius: 0
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
+                }
+            }
+        }
+    })*/
+    </script>
     <script src="stock.js"></script>
     
 </head>
@@ -82,7 +124,7 @@
         </div>
     </template>
     <script src="index.js"></script>
-    <script type="text/python">
+    <!--<script type="text/python">
         from browser import document, window
         import urllib.request
         import time
@@ -91,9 +133,9 @@
 
         tickers = ['CPI','THY','FCPI','RAAX','RINF','LQDI','STIP','PBTP','SCHP','GTIP','VTIP','SPIP','TIP','TIPX','IVOL','VBND','WIP','SEIAX','DVRAX','TUNIX','VCMDX','FIFGX','PCRIX','PRRSX','MLPDX','PRNEX','FIKDX','MRJAX','RASAX','PSPFX','FLIIX','USAGX','USERX','MIDSX','LIFAX','TXRAX','DRXIX','EARRX','DMREX','AUNAX','DCARX','MMLDX','APOAX','ABNAX','ACITX','PRAIX','FXIRX','MPSAX','FIPDX','FBUIX','RRPAX','SWRSX','VTAPX','FSIPX','VIPSX','BKIPX','PQTSX','SRAAX','SHTIX','BPRAX','RRFAX','MXIOX','DIPSX','MXEGX','PRRIX','GSAPX','TCILX','TILUX','HIPAX','TPRTX','LSGSX','WAIIX','JIMAX','NIFAX','MIAAX','BFIAX','TIOAX','TRBFX','PRIPX','USIAX','DFIHX','HCPBX','DFXIX','IRBAX','WHOSX','TLDTX','RCSTX','TSUMX','ACMTX','HRLAX','WMRIX','DPRSX','CARFX','PRDAX','FSRRX','CARPX','LRRAX','CABNX','PZRMX','TPDAX','USCRX','CARJX','SIFAX','CAAHX',]
         reportedValue = []
+        now = int(time.time())-(60*60*24)
+        past = now - (60*60*24*365*5)
         for x in tickers:
-            now = int(time.time())-5000
-            past = now - (60*60*24*365*5)
             html = None
             # options are 1d, 1wk, 1mo
             freak = "1wk"
@@ -110,7 +152,7 @@
                     close.append(list[5])
                 f += 1
             window.createOrderedTicker(x,dates,close)
-    </script>
+    </script>-->
 </body>
 
 </html>
