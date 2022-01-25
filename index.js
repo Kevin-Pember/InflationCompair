@@ -363,7 +363,7 @@ function tickerTabInit(tag) {
 }*/
 function createOrderedTicker(tickerName, Dates, Prices) {
     let temp = document.getElementsByClassName("customFuncTemplate")[0], clon = temp.content.cloneNode(true), targetEl = document.getElementById("funcGrid");
-    clon.getElementById("customFuncButton").innerHTML = "<h2>" + tickerName + "</h2>";
+    clon.getElementById("buttonTitle").innerHTML =  tickerName;
     clon.getElementById('tickerDiv').dataset.ticker = tickerName;
     clon.getElementById('tickerDiv').dataset.dates = Dates
     clon.getElementById('tickerDiv').dataset.prices = Prices
@@ -382,6 +382,11 @@ function createOrderedTicker(tickerName, Dates, Prices) {
     let actualReturn =  returnOf / tracking;
     let returnedString = ""+actualReturn;
     clon.getElementById('return').innerHTML = returnedString.substring(0, returnedString.indexOf('.') + 3) + "%";
+    if(returnedString.charAt(0) == "-"){
+        clon.getElementById('downArrow').style.visibility = "visible";
+    }else {
+        clon.getElementById('upArrow').style.visibility = "visible";
+    }
     clon.getElementById('tickerDiv').dataset.return = actualReturn;
     findPOS(actualReturn, clon);
 }

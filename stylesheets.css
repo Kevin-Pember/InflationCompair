@@ -160,14 +160,13 @@ button:focus, input[type="button"]:focus {
   z-index: 1;
   width:75px;
   height : 100%;
-  margin-top: 5%;
-  justify-content: center;
+  margin-left: 5px;
+  justify-items: center;
+  align-items: center;
   display: grid;
   grid-template-rows: 40% 20% 40%;
-  grid-template-areas: upArrow textDis downArrow;
 }
 .returnText{
-  grid-area: textDis;
 }
 .tickerTag button{
   width: 100%;
@@ -178,10 +177,17 @@ button:focus, input[type="button"]:focus {
   font-size: 25px;
   border: none;
   display: flex;
-  margin-top: -34%;
   align-items: center;
-  justify-content: center;
   -webkit-tap-highlight-color: transparent;
+}
+#buttonTitle{
+  margin-left: calc(50% - 125px);
+}
+#upArrow{
+  visibility: hidden;
+}
+#downArrow{
+  visibility: hidden;
 }
 #tickerDisplay{
   position: absolute;

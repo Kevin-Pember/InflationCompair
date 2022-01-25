@@ -11,40 +11,6 @@
     <script src="/brython_modules/brython.js"></script>
     <script src="/brython_modules/brython_stdlib.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        
-    /*let chart = document.getElementById('graph');
-    let stockTicker = new Chart(chart, {
-        type: 'line',
-        data: {
-            labels: dates,
-            datasets: [{
-                data: closes,
-                label: 'Price',
-                fontColor: '#FFFFFF',
-                borderColor: chartColor,
-                backgroundColor: chartColor,
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            elements: {
-                point: {
-                    radius: 0
-                }
-            },
-            plugins: {
-                legend: {
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                    }
-                }
-            }
-        }
-    })*/
-    </script>
     <script src="stock.js"></script>
     
 </head>
@@ -62,10 +28,14 @@
         </div>
         <template class="customFuncTemplate">
             <div class="tickerTag" id="tickerDiv">
-                <div class="returnDisplay">
-                    <h3 id="return" class="returnText"></h3>
-                </div>
+                
                 <button class="customFuncLinks" id="customFuncButton">
+                    <div class="returnDisplay">
+                        <img id="upArrow" src="Images/upArrow.svg" width="30px">
+                        <h3 id="return" class="returnText">poop</h3>
+                        <img id="downArrow" src="Images/downArrow.svg" width="30px">
+                    </div>
+                    <h3 id="buttonTitle"></h3>
                 </button>
             </div>
         </template>
