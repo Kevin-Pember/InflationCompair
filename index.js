@@ -131,9 +131,12 @@ const tickers = [
     'SIFAX',
     'CAAHX',
 ];
+var stockTicker;
 function initPage(){
     var apiUrl = 'https://www.statbureau.org/get-data-jsonp?jsoncallback=?';
     let array = [];
+    let rates = [];
+    let dates = [];
         $.getJSON(apiUrl, {
                 country: 'united-states',
                 format: true
@@ -149,52 +152,77 @@ function initPage(){
                         "rate": rate,
                         "date": date
                     })
+                    rates.unshift(rate);
+                    dates.unshift(date);
                     }else {
                         break;
                     }
                   }
               });
-        console.log(array)
+              let chart = document.getElementById('graph');
+              stockTicker = new Chart(chart, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        data: rates,
+                        label: 'Rate',
+                        fontColor: '#FFFFFF',
+                        borderColor: "#FFFFFF",
+                        backgroundColor: "#FFFFFF",
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: {
+                        point: {
+                            radius: 0
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                            }
+                        }
+                    }
+                }
+            })
 }
 function tickerClicked(e) {
-    console.log("Stock element is");
-    console.log(stock);
-    var targetEl = e.target;
-    if (e.target.tagName == "H2") {
-        targetEl = e.target.parentElement;
+    let target = e.target;
+    for(let i = 1; i < 0; i++){
+        if(target.nodeName != 'BUTTON'){
+            target = target.parentNode;
+        }else {
+            break;
+        }
     }
-    let ticker = targetEl.dataset.ticker;
-    let tabClon = document.getElementsByClassName("newTab")[0].content.cloneNode(true);
-    tabClon.getElementById('tabButton').innerHTML = "<h3>" + ticker + "</h3><img id='tabRemove' src='Images/xIconWhite.png' width='31.5px'>";
-    tabClon.getElementById('tabButton').dataset.ticker = ticker;
-    let highlight = tabClon.getElementById('tabButton');
-    tabClon.getElementById('tabButton').addEventListener("click", function (e) {
-        if (e.target.id != "tabRemove") {
-            highlightTab(highlight);
-        }
-    });
-    tabClon.getElementById('tabRemove').addEventListener('click', function (e) {
-        console.log("Remove Tab")
-        tabLink = e.target.parentElement;
-        console.log(e.target);
-        let thisTab = false;
-        if (matchTab(tabLink.dataset.ticker).style.visibility == "visible") {
-            thisTab = true;
-        }
-        document.getElementById('mainBody').removeChild(matchTab(tabLink.dataset.ticker, false));
-        document.getElementById('tab').removeChild(tabLink);
-        console.log('Switching to main');
-        if (thisTab) {
-            document.getElementById('mainTab').style.backgroundColor = displayColor;
-            document.getElementById('MainContent').style.visibility = 'visible';
-        }
-    })
-    document.getElementById('tab').appendChild(tabClon);
-    let tab = tickerTabInit(ticker);
-    document.getElementById('mainBody').appendChild(tab);
-    highlightTab(highlight);
+    console.log(target.style.backgroundColor)
+    if(target.style.backgroundColor == 'rgb(56, 56, 56)'){
+        let tickerPrices = target.dataset.prices;
+        let tickerName = target.dataset.id;
+        //remove data placeholder
+        target.style.backgroundColor = '#686868';
+    }else{
+        let tickerPrices = target.dataset.prices;
+        let tickerName = target.dataset.id;
+        console.log(tickerPrices);
+        addDatas(tickerName,tickerPrices);
+        target.style.backgroundColor = '#383838';
+    }
+
 }
-async function setGraph(askReturned, returned, timeInvr, chart, symbol, invr, start, end) {
+function addDatas(label, data) {
+    let chart = stockTicker;
+    chart.data.datasets.push({
+
+    });
+    chart.update();
+}
+/*async function setGraph(askReturned, returned, timeInvr, chart, symbol, invr, start, end) {
     var options = {
         symbol: symbol,
         interval: invr,
@@ -285,7 +313,7 @@ async function setGraph(askReturned, returned, timeInvr, chart, symbol, invr, st
         setAskReturned(closes, askReturned, chartColor);
         addData(stockTicker, dates, closes, chartColor);
     });
-}
+}*/
 function setReturned(closes, returned, chartColor) {
     if (chartColor == "#ff3300") {
         returned.style = "color: #ff3300; ";
