@@ -208,7 +208,7 @@ function tickerClicked(e) {
         target.style.backgroundColor = '#686868';
     }else{
         let tickerPrices = target.dataset.prices;
-        let tickerName = target.dataset.id;
+        let tickerName = target.id;
         console.log(tickerPrices);
         addDatas(tickerName,tickerPrices);
         target.style.backgroundColor = '#383838';
@@ -217,8 +217,14 @@ function tickerClicked(e) {
 }
 function addDatas(label, data) {
     let chart = stockTicker;
+    console.log(data)
+    let color = calculateColor(data);
     chart.data.datasets.push({
-
+        data: data,
+        label: label,
+        fontColor: '#FFFFFF',
+        borderColor: color,
+        backgroundColor: color,
     });
     chart.update();
 }
@@ -393,8 +399,8 @@ function createOrderedTicker(tickerName, Dates, Prices) {
     let temp = document.getElementsByClassName("customFuncTemplate")[0], clon = temp.content.cloneNode(true), targetEl = document.getElementById("funcGrid");
     clon.getElementById("buttonTitle").innerHTML =  tickerName;
     clon.getElementById('tickerDiv').dataset.ticker = tickerName;
-    clon.getElementById('tickerDiv').dataset.dates = Dates
-    clon.getElementById('tickerDiv').dataset.prices = Prices
+    clon.getElementById('customFuncButton').dataset.dates = Dates
+    clon.getElementById('customFuncButton').dataset.prices = Prices
     clon.getElementById('customFuncButton').addEventListener("click", function (e) {
         tickerClicked(e);
     });
