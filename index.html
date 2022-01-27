@@ -16,7 +16,10 @@
 </head>
 
 <body id="mainBody" onload="brython()">
-    <div id="loadingDIV"></div>
+    <div id="loadingDIV">
+        <img id="loadingWheel" src="Images/loading.svg" width="100px">
+        
+    </div>
     <div id="MainContent" class="tabcontent" data-ticker="mainTab">
         <details id="graphDetails">
             <summary class="secondaryHeaders">Graph</summary>
@@ -87,23 +90,29 @@
         reportedValue = []
         now = int(time.time())-(60*60*24)
         past = now - (60*60*24*365*5)
-        for x in tickers:
-            html = None
-            # options are 1d, 1wk, 1mo
-            freak = "1wk"
-            dates = []
-            close = []
-            fetchedUrl = 'https://query1.finance.yahoo.com/v7/finance/download/'+ str(x) +'?period1='+str(past)+'&period2='+str(now)+'&interval='+freak+'&events=history&includeAdjustedClose=true'
-            with urllib.request.urlopen(fetchedUrl) as f:
-                html = f.read().splitlines()
-            f = 0
-            for rows in html:
-                if f > 0:
-                    list = rows.split(',')
-                    dates.append(list[0])
-                    close.append(list[5])
-                f += 1
-            window.createOrderedTicker(x,dates,close)
+        try:
+            for x in tickers:
+                html = None
+                # options are 1d, 1wk, 1mo
+                freak = "1wk"
+                dates = []
+                close = []
+                fetchedUrl = 'https://query1.finance.yahoo.com/v7/finance/download/'+ str(x) +'?period1='+str(past)+'&period2='+str(now)+'&interval='+freak+'&events=history&includeAdjustedClose=true'
+                with urllib.request.urlopen(fetchedUrl) as f:
+                    html = f.read().splitlines()
+                f = 0
+                for rows in html:
+                    if f > 0:
+                        list = rows.split(',')
+                        dates.append(list[0])
+                        close.append(list[5])
+                    f += 1
+                window.createOrderedTicker(x,dates,close)
+            window.stopLoading();
+        except:
+            print("error")
+            window.showError();
+        
     </script>
 </body>
 

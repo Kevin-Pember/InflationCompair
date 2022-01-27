@@ -40,6 +40,35 @@ body{
   overflow-x: hidden;
   overflow-y: hidden;
 }
+#loadingDIV{
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top:0;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  background-color: var(--translucent);
+  z-index: 5;
+  position: absolute;
+}
+@keyframes loadingSpin{
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+#loadingWheel{
+  animation-name: loadingSpin;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+#loadingError{
+  visibility: hidden;
+}
 #uifCalculator::-webkit-scrollbar {
   width: 2vh;
   
@@ -321,15 +350,6 @@ button:focus, input[type="button"]:focus {
   background-color: var(--translucent);
   border-radius: 25px;
   text-align: center;
-}
-#loadingDIV{
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top:0;
-  background-color: var(--translucent);
-  z-index: 5;
-  position: absolute;
 }
 input:focus, textarea:focus, select:focus{
   outline: none;

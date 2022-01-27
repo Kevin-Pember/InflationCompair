@@ -191,6 +191,13 @@ function initPage(){
                 }
             })
 }
+function stopLoading(){
+    document.getElementById('loadingDIV').style.visibility = 'hidden';
+}
+function showError(){
+    document.getElementById('loadingWheel').style.visibility = "hidden";
+    document.getElementById('loadingDiv').innerHTML = "<h3 id='loadingError'>Something went wrong consider CORS or waiting a bit<h3>";
+}
 function tickerClicked(e) {
     let target = e.target;
     for(let i = 1; i < 0; i++){
