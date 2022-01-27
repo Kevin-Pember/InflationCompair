@@ -196,7 +196,14 @@ function stopLoading(){
 }
 function showError(){
     document.getElementById('loadingWheel').style.visibility = "hidden";
-    document.getElementById('loadingDiv').innerHTML = "<h3 id='loadingError'>Something went wrong consider CORS or waiting a bit<h3>";
+    let tickers = document.getElementsByClassName('tickerTag')
+    let message = "";
+    if(tickers.length == 0){
+        message = "No tickers found, please disable CORS";
+    }else{
+        message = "Wait then refresh, there was an error loading data";
+    }
+    document.getElementById('loadingDIV').innerHTML = "<h3 id='loadingError'>"+message+"</h3>";
 }
 function tickerClicked(e) {
     let target = e.target;

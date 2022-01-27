@@ -67,7 +67,7 @@ body{
   animation-timing-function: ease-in-out;
 }
 #loadingError{
-  visibility: hidden;
+  visibility: visible;
 }
 #uifCalculator::-webkit-scrollbar {
   width: 2vh;
