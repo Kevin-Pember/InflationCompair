@@ -108,7 +108,7 @@ const tickers = [
     'SIFAX',
     'CAAHX',
 ];
-var stockAPIKey ="";
+var stockAPIKey = "";
 if (localStorage.getItem('apiKey') != null) {
     stockAPIKey = localStorage.getItem('apiKey');
 } else {
@@ -133,46 +133,66 @@ document.getElementById('exitAdd').addEventListener('click', function (e) {
 });
 
 var stockTicker;
-function getKey(){
-    if(localStorage.getItem('apiKey') != null){
+function getKey() {
+    if (localStorage.getItem('apiKey') != null) {
         return localStorage.getItem('apiKey')
     }
 }
-function listInTable(array){
-    console.log(typeof array[0])
-    console.table(array);
+function CSVToArray(strData) {
+    let indexOfDataStart = strData.indexOf('"data":[');
+    let indexOfDataEnd = strData.indexOf('],"collapse"');
+    strData = strData.substring(indexOfDataStart + 8, indexOfDataEnd);
+    let array = [];
+    while (strData.length > 0) {
+        let full = findObject(strData);
+        console.log(full)
+        let object = full[0];
+        let date = full[1];
+        let indexOfBackBraket = full[2];
+        array.push(object);
+        let d = new Date();
+        d.setFullYear(d.getFullYear() - 2);
+        if (date.includes(d.getFullYear() + "-" + addZero(d.getMonth() + 1))) {
+            strData = strData.substring(indexOfBackBraket + 1, strData.length);
+            let object = findObject(strData);
+            array.push(object[0]);
+            break;
+        }
+        strData = strData.substring(indexOfBackBraket + 1, strData.length);
+    }
+    console.log(array);
+    return array;
+}
+function findObject(string) {
+    let indexOfFrontBraket = string.indexOf('[');
+    let indexOfBackBraket = string.indexOf(']');
+    let targetString = string.substring(indexOfFrontBraket + 1, indexOfBackBraket);
+    let date = targetString.substring(1, targetString.indexOf(',') - 1);
+    let value = Number(targetString.substring(targetString.indexOf(',') + 1, targetString.length));
+    return [{
+        "date": date,
+        "value": value
+    }, date, indexOfBackBraket];
+}
+function inflationCSV(string) {
+    console.log(CSVToArray(string));
 }
 //The method ran when the page is loaded. It gets the inflaction rate during the last two years
-function initPage() {
+function initPage(rawArray) {
     var apiUrl = 'https://www.statbureau.org/get-data-jsonp?jsoncallback=?';
     let array = [];
     let rates = [];
     let dates = [];
-    $.getJSON(apiUrl, {
-        country: 'united-states',
-        format: true
-    })
-        .done(function (data) {
-            console.log(data)
-            let target = new Date();
-            let stringDate = (target.getFullYear() - 2) + '-' + addZero(target.getMonth() + 1) + '-01';
-            for (let obj of data) {
-                let rate = obj.InflationRateFormatted;
-                let date = obj.MonthFormatted;
-                if (date != stringDate) {
-                    array.unshift({
-                        "rate": rate,
-                        "date": date
-                    })
-                    rates.unshift(rate);
-                    dates.unshift(date);
-                } else {
-                    break;
-                }
-            }
-        });
-    
-        console.log(dates);
+
+    let inflationData = CSVToArray(rawArray).reverse();
+    for (let i = 1; i < inflationData.length; i++) {
+        let init = inflationData[i - 1].value;
+        let curr = inflationData[i].value;
+        let percent = (curr - init) / Math.abs(init) * 100;
+        rates.push(percent);
+        dates.push(inflationData[i].date);
+    }
+
     let chart = document.getElementById('graph');
     stockTicker = new Chart(chart, {
         type: 'line',
@@ -279,7 +299,7 @@ function removeDatas(label) {
 function indexDatas(ticker) {
     let chart = stockTicker;
     for (let i = 0; i < chart.data.datasets.length; i++) {
-        if (chart.data.datasets[i].label == ticker+"(% change)") {
+        if (chart.data.datasets[i].label == ticker + "(% change)") {
             return i;
         }
     }

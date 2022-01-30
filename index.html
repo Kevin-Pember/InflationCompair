@@ -29,7 +29,6 @@
             <div id="graphContainer">
                 <!--Actual Graph-->
                 <canvas id="graph"  height="400"></canvas>
-                <a href = "https://www.statbureau.org" >www.statbureau.org</a>
             </div>
         </details>
         <!--Functions Grid Container-->
@@ -70,17 +69,18 @@
         import time
         import json
         import csv
+        import json
 
         url="https://data.nasdaq.com/api/v3/datasets/RATEINF/CPI_USA?column_index=1&api_key="+window.getKey();
         test = None
         with urllib.request.urlopen(url) as f:
-            test = f.read().splitlines()
-        print(test)
+            test = f.read()
         reader = csv.reader(test)
         listOfCSV = []
         for row in reader:
             listOfCSV.append(row)
-        window.listInTable(listOfCSV)
+        window.initPage(test)
+
         tickers = ['CPI']
         #,'THY','FCPI','RAAX','RINF','LQDI','STIP','PBTP','SCHP','GTIP','VTIP','SPIP','TIP','TIPX','IVOL','VBND','WIP','SEIAX','DVRAX','TUNIX','VCMDX','FIFGX','PCRIX','PRRSX','MLPDX','PRNEX','FIKDX','MRJAX','RASAX','PSPFX','FLIIX','USAGX','USERX','MIDSX','LIFAX','TXRAX','DRXIX','EARRX','DMREX','AUNAX','DCARX','MMLDX','APOAX','ABNAX','ACITX','PRAIX','FXIRX','MPSAX','FIPDX','FBUIX','RRPAX','SWRSX','VTAPX','FSIPX','VIPSX','BKIPX','PQTSX','SRAAX','SHTIX','BPRAX','RRFAX','MXIOX','DIPSX','MXEGX','PRRIX','GSAPX','TCILX','TILUX','HIPAX','TPRTX','LSGSX','WAIIX','JIMAX','NIFAX','MIAAX','BFIAX','TIOAX','TRBFX','PRIPX','USIAX','DFIHX','HCPBX','DFXIX','IRBAX','WHOSX','TLDTX','RCSTX','TSUMX','ACMTX','HRLAX','WMRIX','DPRSX','CARFX','PRDAX','FSRRX','CARPX','LRRAX','CABNX','PZRMX','TPDAX','USCRX','CARJX','SIFAX','CAAHX',]
         reportedValue = []
