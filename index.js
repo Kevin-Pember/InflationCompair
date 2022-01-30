@@ -244,13 +244,17 @@ function showError() {
 //function responsible for the behavor of the ticker buttons when clicked
 function tickerClicked(e) {
     let target = e.target;
-    for (let i = 1; i < 0; i++) {
-        if (target.nodeName != 'BUTTON') {
-            target = target.parentNode;
-        } else {
+    console.log(target.nodeName);
+    let whiel = true
+    while(whiel) {
+        if (target.nodeName == 'BUTTON') {
             break;
+            
+        } else {
+            target = target.parentNode;
         }
     }
+    console.log(target);
     if (target.style.backgroundColor === 'rgb(56, 56, 56)') {
         let tickerPrices = target.dataset.prices;
         let tickerName = target.id;
