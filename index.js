@@ -1,26 +1,6 @@
 initPage();
 var benchROR = [];
 console.log("%cStarting Shit", 'color: green;');
-if (localStorage.getItem('apiKey') != null) {
-    stock = new Stocks(localStorage.getItem('apiKey'));
-} else {
-    document.getElementById('enterPrompt').style.visibility = 'visible';
-    document.getElementById('exitAdd').style.visibility = 'hidden';
-    document.getElementById('apiLink').style.visibility = 'visible';
-}
-document.getElementById('addButton').addEventListener('click', function (e) {
-    if (localStorage.getItem('apiKey') != null) {
-    } else {
-        document.getElementById('exitAdd').style.visibility = "inherit";
-        document.getElementById('apiLink').style.visibility = 'hidden';
-    }
-    localStorage.setItem('apiKey', document.getElementById('newLinkText').value);
-    stock = new Stocks(localStorage.getItem('apiKey'));
-    document.getElementById('enterPrompt').style.visibility = 'hidden';
-});
-document.getElementById('exitAdd').addEventListener('click', function (e) {
-    document.getElementById('enterPrompt').style.visibility = 'hidden';
-});
 // = new Stocks('NI9FLNUKRBMDU47J');
 let TextColorGlobal = "#FFFFFF";
 let displayColor = getComputedStyle(document.body).getPropertyValue('--displayColor');
@@ -143,7 +123,7 @@ function initPage(){
             })
               .done(function (data) {
                   let target = new Date();
-                  let stringDate = (target.getFullYear()-5) + '-' + addZero(target.getMonth() + 1) + '-01';
+                  let stringDate = (target.getFullYear()-2) + '-' + addZero(target.getMonth() + 1) + '-01';
                   for(let obj of data){
                     let rate = obj.InflationRateFormatted;
                     let date = obj.MonthFormatted;
@@ -221,21 +201,31 @@ function tickerClicked(e) {
         //remove data placeholder
         target.style.backgroundColor = '#686868';
     }else{
-        let tickerPrices = target.dataset.prices;
+        let tickerPrices = target.dataset.prices.split(',');
         let tickerName = target.id;
+        let tickerDates = target.dataset.dates.split(',');
         console.log(tickerPrices);
-        addDatas(tickerName,tickerPrices);
+        addDatas(tickerName,tickerPrices,tickerDates);
         target.style.backgroundColor = '#383838';
     }
 
 }
-function addDatas(label, data) {
+function addDatas(label, data, dates) {
+    let rates = [];
+    for(let i = 1; i < data.length; i++){
+        let init = Number(data[i-1]);
+        let curr = Number(data[i]);
+        let percent = (curr-init)/Math.abs(init)*100;
+        console.log("Percentage is "+percent)
+        rates.push(percent);
+    }
     let chart = stockTicker;
     console.log(data)
     let color = calculateColor(data);
+    //chart.data.labels = dates;
     chart.data.datasets.push({
-        data: data,
-        label: label,
+        data: rates,
+        label: label+"(% change)",
         fontColor: '#FFFFFF',
         borderColor: color,
         backgroundColor: color,
@@ -362,25 +352,6 @@ function calculateColor(closes) {
     } else {
         return "#33cc33";
     }
-}
-function addData(chart, label, data, color) {
-    chart.data.labels = label;
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data = data;
-        dataset.borderColor = color;
-        dataset.backgroundColor = color;
-    });
-    chart.update();
-}
-
-function removeData(chart) {
-    chart.data.labels = [];
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data = [];
-        dataset.borderColor = [];
-        dataset.backgroundColor = [];
-    });
-    chart.update();
 }
 function tickerTabInit(tag) {
     let tab = document.getElementsByClassName('custFuncTabTemp')[0].content.cloneNode(true);
