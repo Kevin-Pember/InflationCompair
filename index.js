@@ -1,6 +1,4 @@
-initPage();
 var benchROR = [];
-// = new Stocks('NI9FLNUKRBMDU47J');
 let TextColorGlobal = "#FFFFFF";
 let displayColor = getComputedStyle(document.body).getPropertyValue('--displayColor');
 let functionColor = getComputedStyle(document.body).getPropertyValue('--functionsColor');
@@ -110,7 +108,40 @@ const tickers = [
     'SIFAX',
     'CAAHX',
 ];
+var stockAPIKey ="";
+if (localStorage.getItem('apiKey') != null) {
+    stockAPIKey = localStorage.getItem('apiKey');
+} else {
+    stopLoading();
+    document.getElementById('enterPrompt').style.visibility = 'visible';
+    document.getElementById('exitAdd').style.visibility = 'hidden';
+    document.getElementById('apiLink').style.visibility = 'visible';
+}
+document.getElementById('addButton').addEventListener('click', function (e) {
+    if (localStorage.getItem('apiKey') != null) {
+    } else {
+        document.getElementById('exitAdd').style.visibility = "inherit";
+        document.getElementById('apiLink').style.visibility = 'hidden';
+    }
+    localStorage.setItem('apiKey', document.getElementById('newLinkText').value);
+    initPage();
+    document.getElementById('enterPrompt').style.visibility = 'hidden';
+    window.location.reload();
+});
+document.getElementById('exitAdd').addEventListener('click', function (e) {
+    document.getElementById('enterPrompt').style.visibility = 'hidden';
+});
+
 var stockTicker;
+function getKey(){
+    if(localStorage.getItem('apiKey') != null){
+        return localStorage.getItem('apiKey')
+    }
+}
+function listInTable(array){
+    console.log(typeof array[0])
+    console.table(array);
+}
 //The method ran when the page is loaded. It gets the inflaction rate during the last two years
 function initPage() {
     var apiUrl = 'https://www.statbureau.org/get-data-jsonp?jsoncallback=?';
@@ -122,6 +153,7 @@ function initPage() {
         format: true
     })
         .done(function (data) {
+            console.log(data)
             let target = new Date();
             let stringDate = (target.getFullYear() - 2) + '-' + addZero(target.getMonth() + 1) + '-01';
             for (let obj of data) {
@@ -139,6 +171,8 @@ function initPage() {
                 }
             }
         });
+    
+        console.log(dates);
     let chart = document.getElementById('graph');
     stockTicker = new Chart(chart, {
         type: 'line',

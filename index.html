@@ -16,17 +16,23 @@
 </head>
 
 <body id="mainBody" onload="brython()">
+    <!-- Loading Screen-->
     <div id="loadingDIV">
+        <!--Loading bar-->
         <img id="loadingWheel" src="Images/loading.svg" width="100px">
-        
     </div>
+    <!--Main Content Window-->
     <div id="MainContent" data-ticker="mainTab">
+        <!--Graph Container-->
         <details id="graphDetails">
             <summary class="secondaryHeaders">Graph</summary>
             <div id="graphContainer">
+                <!--Actual Graph-->
                 <canvas id="graph"  height="400"></canvas>
+                <a href = "https://www.statbureau.org" >www.statbureau.org</a>
             </div>
         </details>
+        <!--Functions Grid Container-->
         <div id="funcGrid">
 
         </div>
@@ -44,17 +50,39 @@
             </div>
         </template>
     </div>
+    <div id="enterPrompt">
+        <div id="prompty">
+            <input type="text" placeholder="Enter" id="newLinkText">
+            <img id="addButton" src="Images/checkmark.svg">
+            <h1 id="apiLink"><a href="https://www.alphavantage.co/support/#api-key">Get Key</a></h1>
+        </div>
+        <div id="topOfPrompt">
+            <h3 id="newLinkTitle">API Key</h3>
+            <img id='exitAdd' src="Images/xIconWhite.svg" width="40">
+        </div>
+    </div>
     <script src="index.js"></script>
     <script type="text/python">
         #Python script to run a url fetch to get API data which then parses it for the javscript methods
         from browser import document, window
+        import urllib
         import urllib.request
         import time
         import json
         import csv
 
+        url="https://data.nasdaq.com/api/v3/datasets/RATEINF/CPI_USA?column_index=1&api_key="+window.getKey();
+        test = None
+        with urllib.request.urlopen(url) as f:
+            test = f.read().splitlines()
+        print(test)
+        reader = csv.reader(test)
+        listOfCSV = []
+        for row in reader:
+            listOfCSV.append(row)
+        window.listInTable(listOfCSV)
         tickers = ['CPI']
-        #'THY','FCPI','RAAX','RINF','LQDI','STIP','PBTP','SCHP','GTIP','VTIP','SPIP','TIP','TIPX','IVOL','VBND','WIP','SEIAX','DVRAX','TUNIX','VCMDX','FIFGX','PCRIX','PRRSX','MLPDX','PRNEX','FIKDX','MRJAX','RASAX','PSPFX','FLIIX','USAGX','USERX','MIDSX','LIFAX','TXRAX','DRXIX','EARRX','DMREX','AUNAX','DCARX','MMLDX','APOAX','ABNAX','ACITX','PRAIX','FXIRX','MPSAX','FIPDX','FBUIX','RRPAX','SWRSX','VTAPX','FSIPX','VIPSX','BKIPX','PQTSX','SRAAX','SHTIX','BPRAX','RRFAX','MXIOX','DIPSX','MXEGX','PRRIX','GSAPX','TCILX','TILUX','HIPAX','TPRTX','LSGSX','WAIIX','JIMAX','NIFAX','MIAAX','BFIAX','TIOAX','TRBFX','PRIPX','USIAX','DFIHX','HCPBX','DFXIX','IRBAX','WHOSX','TLDTX','RCSTX','TSUMX','ACMTX','HRLAX','WMRIX','DPRSX','CARFX','PRDAX','FSRRX','CARPX','LRRAX','CABNX','PZRMX','TPDAX','USCRX','CARJX','SIFAX','CAAHX',]
+        #,'THY','FCPI','RAAX','RINF','LQDI','STIP','PBTP','SCHP','GTIP','VTIP','SPIP','TIP','TIPX','IVOL','VBND','WIP','SEIAX','DVRAX','TUNIX','VCMDX','FIFGX','PCRIX','PRRSX','MLPDX','PRNEX','FIKDX','MRJAX','RASAX','PSPFX','FLIIX','USAGX','USERX','MIDSX','LIFAX','TXRAX','DRXIX','EARRX','DMREX','AUNAX','DCARX','MMLDX','APOAX','ABNAX','ACITX','PRAIX','FXIRX','MPSAX','FIPDX','FBUIX','RRPAX','SWRSX','VTAPX','FSIPX','VIPSX','BKIPX','PQTSX','SRAAX','SHTIX','BPRAX','RRFAX','MXIOX','DIPSX','MXEGX','PRRIX','GSAPX','TCILX','TILUX','HIPAX','TPRTX','LSGSX','WAIIX','JIMAX','NIFAX','MIAAX','BFIAX','TIOAX','TRBFX','PRIPX','USIAX','DFIHX','HCPBX','DFXIX','IRBAX','WHOSX','TLDTX','RCSTX','TSUMX','ACMTX','HRLAX','WMRIX','DPRSX','CARFX','PRDAX','FSRRX','CARPX','LRRAX','CABNX','PZRMX','TPDAX','USCRX','CARJX','SIFAX','CAAHX',]
         reportedValue = []
         now = int(time.time())-(60*60*24)
         past = now - (60*60*24*365*2)

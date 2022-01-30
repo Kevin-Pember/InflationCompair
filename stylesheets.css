@@ -354,6 +354,36 @@ button:focus, input[type="button"]:focus {
 input:focus, textarea:focus, select:focus{
   outline: none;
 }
+#apiLink{
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  background-color: var(--functionsColor);
+  border-radius: 25px;
+  padding: 5px;
+  overflow: hidden;
+  visibility: hidden;
+}
+#newLinkText{
+  font-family:Arial, Helvetica, sans-serif;
+  background-color: var(--displayColor);
+  font-size: 5vw;
+  margin-left: 2.5%;
+  padding-left: 2%;
+  margin-top: 40px;
+  border-radius: 25px;
+  width: calc(3.4vw * 16);
+  height: auto;
+  color: var(--textColor);
+  border: none;
+  resize: none;
+  overflow:hidden;
+}
+#exitAdd{
+  top:5px;
+  right: 5px;
+  position: absolute;
+}
 @media only screen and (max-width: 534px) {
   #funcGrid{
     grid-template-columns: 50% 50%;
