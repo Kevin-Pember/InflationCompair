@@ -112,125 +112,145 @@ const tickers = [
     'CAAHX',
 ];
 var stockTicker;
-function initPage(){
+function initPage() {
     var apiUrl = 'https://www.statbureau.org/get-data-jsonp?jsoncallback=?';
     let array = [];
     let rates = [];
     let dates = [];
-        $.getJSON(apiUrl, {
-                country: 'united-states',
-                format: true
-            })
-              .done(function (data) {
-                  let target = new Date();
-                  let stringDate = (target.getFullYear()-2) + '-' + addZero(target.getMonth() + 1) + '-01';
-                  for(let obj of data){
-                    let rate = obj.InflationRateFormatted;
-                    let date = obj.MonthFormatted;
-                    if(date != stringDate){
+    $.getJSON(apiUrl, {
+        country: 'united-states',
+        format: true
+    })
+        .done(function (data) {
+            let target = new Date();
+            let stringDate = (target.getFullYear() - 2) + '-' + addZero(target.getMonth() + 1) + '-01';
+            for (let obj of data) {
+                let rate = obj.InflationRateFormatted;
+                let date = obj.MonthFormatted;
+                if (date != stringDate) {
                     array.unshift({
                         "rate": rate,
                         "date": date
                     })
                     rates.unshift(rate);
                     dates.unshift(date);
-                    }else {
-                        break;
-                    }
-                  }
-              });
-              let chart = document.getElementById('graph');
-              stockTicker = new Chart(chart, {
-                type: 'line',
-                data: {
-                    labels: dates,
-                    datasets: [{
-                        data: rates,
-                        label: 'Rate',
-                        fontColor: '#FFFFFF',
-                        borderColor: "#FFFFFF",
-                        backgroundColor: "#FFFFFF",
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    elements: {
-                        point: {
-                            radius: 0
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                usePointStyle: true,
-                                pointStyle: 'circle',
-                            }
-                        }
+                } else {
+                    break;
+                }
+            }
+        });
+    let chart = document.getElementById('graph');
+    stockTicker = new Chart(chart, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [{
+                data: rates,
+                label: 'Rate',
+                fontColor: '#FFFFFF',
+                borderColor: "#FFFFFF",
+                backgroundColor: "#FFFFFF",
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            elements: {
+                point: {
+                    radius: 0
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
                     }
                 }
-            })
+            }
+        }
+    })
 }
-function stopLoading(){
+function stopLoading() {
     document.getElementById('loadingDIV').style.visibility = 'hidden';
 }
-function showError(){
+function showError() {
     document.getElementById('loadingWheel').style.visibility = "hidden";
     let tickers = document.getElementsByClassName('tickerTag')
     let message = "";
-    if(tickers.length == 0){
+    if (tickers.length == 0) {
         message = "No tickers found, please disable CORS";
-    }else{
+    } else {
         message = "Wait then refresh, there was an error loading data";
     }
-    document.getElementById('loadingDIV').innerHTML = "<h3 id='loadingError'>"+message+"</h3>";
+    document.getElementById('loadingDIV').innerHTML = "<h3 id='loadingError'>" + message + "</h3>";
 }
 function tickerClicked(e) {
     let target = e.target;
-    for(let i = 1; i < 0; i++){
-        if(target.nodeName != 'BUTTON'){
+    for (let i = 1; i < 0; i++) {
+        if (target.nodeName != 'BUTTON') {
             target = target.parentNode;
-        }else {
+        } else {
             break;
         }
     }
     console.log(target.style.backgroundColor)
-    if(target.style.backgroundColor == 'rgb(56, 56, 56)'){
+    if (target.style.backgroundColor === 'rgb(56, 56, 56)') {
+        console.log("Color Found");
         let tickerPrices = target.dataset.prices;
-        let tickerName = target.dataset.id;
+        let tickerName = target.id;
         //remove data placeholder
+        removeDatas(tickerName)
         target.style.backgroundColor = '#686868';
-    }else{
+    } else {
         let tickerPrices = target.dataset.prices.split(',');
         let tickerName = target.id;
         let tickerDates = target.dataset.dates.split(',');
         console.log(tickerPrices);
-        addDatas(tickerName,tickerPrices,tickerDates);
+        addDatas(tickerName, tickerPrices, tickerDates);
         target.style.backgroundColor = '#383838';
     }
 
 }
 function addDatas(label, data, dates) {
     let rates = [];
-    for(let i = 1; i < data.length; i++){
-        let init = Number(data[i-1]);
+    for (let i = 1; i < data.length; i++) {
+        let init = Number(data[i - 1]);
         let curr = Number(data[i]);
-        let percent = (curr-init)/Math.abs(init)*100;
-        console.log("Percentage is "+percent)
+        let percent = (curr - init) / Math.abs(init) * 100;
         rates.push(percent);
     }
     let chart = stockTicker;
-    console.log(data)
     let color = calculateColor(data);
     //chart.data.labels = dates;
-    chart.data.datasets.push({
-        data: rates,
-        label: label+"(% change)",
-        fontColor: '#FFFFFF',
-        borderColor: color,
-        backgroundColor: color,
-    });
+    let contains = indexDatas(label);
+    if (contains == -1) {
+        chart.data.datasets.push({
+            data: rates,
+            label: label + "(% change)",
+            fontColor: '#FFFFFF',
+            borderColor: color,
+            backgroundColor: color,
+        });
+        chart.update();
+    }
+}
+function removeDatas(label) {
+    let chart = stockTicker;
+    console.log("Index of "+indexDatas(label))
+    chart.data.datasets.splice(indexDatas(label), 1)
     chart.update();
+}
+function indexDatas(ticker) {
+    let chart = stockTicker;
+    console.log(chart.data.datasets)
+    for (let i = 0; i < chart.data.datasets.length; i++) {
+        console.log(chart.data.datasets[i].label);
+        if (chart.data.datasets[i].label == ticker+"(% change)") {
+            return i;
+        }
+    }
+    return -1;
 }
 /*async function setGraph(askReturned, returned, timeInvr, chart, symbol, invr, start, end) {
     var options = {
@@ -382,7 +402,7 @@ function tickerTabInit(tag) {
 }*/
 function createOrderedTicker(tickerName, Dates, Prices) {
     let temp = document.getElementsByClassName("customFuncTemplate")[0], clon = temp.content.cloneNode(true), targetEl = document.getElementById("funcGrid");
-    clon.getElementById("buttonTitle").innerHTML =  tickerName;
+    clon.getElementById("buttonTitle").innerHTML = tickerName;
     clon.getElementById('tickerDiv').dataset.ticker = tickerName;
     clon.getElementById('customFuncButton').dataset.dates = Dates
     clon.getElementById('customFuncButton').dataset.prices = Prices
@@ -397,38 +417,38 @@ function createOrderedTicker(tickerName, Dates, Prices) {
     //Dates = fill[0];
     //Prices = fill[1];
     let tracking = trackingError(Prices);
-    let returnOf =  Prices[Prices.length - 1]-Prices[0];
-    let actualReturn =  returnOf / tracking;
-    let returnedString = ""+actualReturn;
+    let returnOf = Prices[Prices.length - 1] - Prices[0];
+    let actualReturn = returnOf / tracking;
+    let returnedString = "" + actualReturn;
     clon.getElementById('return').innerHTML = returnedString.substring(0, returnedString.indexOf('.') + 3) + "%";
-    if(returnedString.charAt(0) == "-"){
+    if (returnedString.charAt(0) == "-") {
         clon.getElementById('downArrow').style.visibility = "visible";
-    }else {
+    } else {
         clon.getElementById('upArrow').style.visibility = "visible";
     }
     clon.getElementById('tickerDiv').dataset.return = actualReturn;
     findPOS(actualReturn, clon);
 }
-function findPOS(returnOf, element){
+function findPOS(returnOf, element) {
     let targetEl = document.getElementById("funcGrid");
     let otherETFs = document.getElementsByClassName('tickerTag');
     let position
     let got = false;
-    if(otherETFs != null){
-        position = otherETFs.length-1;
-    }else {
+    if (otherETFs != null) {
+        position = otherETFs.length - 1;
+    } else {
         position = otherETFs.length;
     }
-    for(let i = 0; i < otherETFs.length; i++){
-        if(otherETFs[i].dataset.return < returnOf){
+    for (let i = 0; i < otherETFs.length; i++) {
+        if (otherETFs[i].dataset.return < returnOf) {
             position = i;
             got = true;
             break;
         }
     }
-    if(got){
+    if (got) {
         targetEl.insertBefore(element, otherETFs[position]);
-    }else {
+    } else {
         targetEl.appendChild(element);
     }
 }
@@ -438,24 +458,24 @@ function backfill(Dates, Prices, targetDate) {
     let past = new Date(closeDate[0]);
     past.setDate(past.getDate() + 1);
     let index = closeDate[1];
-    for(let i = index; i < Dates.length; i++){
-        if(Dates[i] != parseYear(past)){
+    for (let i = index; i < Dates.length; i++) {
+        if (Dates[i] != parseYear(past)) {
             console.log("%c Date Unexpected Found", "color: red;");
-            Dates.splice(i-1, 0, past);
-            Prices.splice(i-1, 0, Prices[i-1]);
+            Dates.splice(i - 1, 0, past);
+            Prices.splice(i - 1, 0, Prices[i - 1]);
             break;
         }
         past.setDate(past.getDate() + 7);
     }
     return [Dates, Prices];
 }
-function trackingError(prices){
+function trackingError(prices) {
     let squaredPrice = 0.0;
     let secondary = prices;
     let first = prices[0];
     prices.shift();
-    for(let price of prices){
-        squaredPrice += Math.pow((price-first), 2);
+    for (let price of prices) {
+        squaredPrice += Math.pow((price - first), 2);
     }
     return Math.sqrt(squaredPrice / secondary.length);
 }
