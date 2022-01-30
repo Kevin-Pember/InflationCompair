@@ -20,7 +20,7 @@
         <img id="loadingWheel" src="Images/loading.svg" width="100px">
         
     </div>
-    <div id="MainContent" class="tabcontent" data-ticker="mainTab">
+    <div id="MainContent" data-ticker="mainTab">
         <details id="graphDetails">
             <summary class="secondaryHeaders">Graph</summary>
             <div id="graphContainer">
@@ -44,42 +44,9 @@
             </div>
         </template>
     </div>
-    <div id="enterPrompt">
-        <div id="prompty">
-            <input type="text" placeholder="Enter" id="newLinkText">
-            <img id="addButton" src="Images/checkmark.svg">
-            <h1 id="apiLink"><a href="https://www.alphavantage.co/support/#api-key">Get Key</a></h1>
-        </div>
-        <div id="topOfPrompt">
-            <h3 id="newLinkTitle">API Key</h3>
-            <img id='exitAdd' src="Images/xIconWhite.svg" width="40">
-        </div>
-    </div>
-    <template class="custFuncTabTemp">
-        <div class="tabcontent" id="customFuncTab">
-            <h1 id="tickerTag">
-            </h1>
-            <div id="tickerDisplay">
-                <div id="chartContainer">
-                    <canvas id="charta"></canvas>
-                </div>
-                <div id="timeInvr">
-                    <button id="week" class="invrBut">W</button>
-                    <button id="month" class="invrBut">M</button>
-                    <button id="year" class="invrBut">Y</button>
-                    <button id="fiveToMax" class="invrBut">5Y</button>
-                </div>
-                <div id=justified>
-                    <h1 class="dataLabel">Return</h1>
-                    <h1 id='returned'></h1>
-                    <h1 class="dataLabel">% Difference</h1>
-                    <h1 id='askedReturned'></h1>
-                </div>
-            </div>
-        </div>
-    </template>
     <script src="index.js"></script>
     <script type="text/python">
+        #Python script to run a url fetch to get API data which then parses it for the javscript methods
         from browser import document, window
         import urllib.request
         import time

@@ -130,7 +130,7 @@ button:focus, input[type="button"]:focus {
   object-fit: fill;
   position: absolute;
 }
-.tabcontent {
+#MainContent {
   position:absolute;
   width: 100%;
   left: 0;
