@@ -182,6 +182,7 @@ function initPage(rawArray) {
     var apiUrl = 'https://www.statbureau.org/get-data-jsonp?jsoncallback=?';
     let array = [];
     let rates = [];
+    let prices = [];
     let dates = [];
 
     let inflationData = CSVToArray(rawArray).reverse();
@@ -190,9 +191,9 @@ function initPage(rawArray) {
         let curr = inflationData[i].value;
         let percent = (curr - init) / Math.abs(init) * 100;
         rates.push(percent);
+        prices.push(Number(inflationData[i].value));
         dates.push(inflationData[i].date);
     }
-
     let chart = document.getElementById('graph');
     stockTicker = new Chart(chart, {
         type: 'line',
@@ -235,9 +236,9 @@ function showError() {
     let tickers = document.getElementsByClassName('tickerTag')
     let message = "";
     if (tickers.length == 0) {
-        message = "No tickers found, please disable CORS";
+        message = "No tickers found, please disable CORS. \n Links to extensions <a href='https://addons.mozilla.org/en-US/firefox/search/?q=cors'>Mozilla</a> & <a href='https://chrome.google.com/webstore/search/cors'>Chrome</a>";
     } else {
-        message = "Wait then refresh, there was an error loading data";
+        message = "Wait then refresh, there was an error loading data ";
     }
     document.getElementById('loadingDIV').innerHTML = "<h3 id='loadingError'>" + message + "</h3>";
 }
